@@ -7,14 +7,14 @@
   <style>
     :root {
       --bg:      #080b11;
-      --bg2:     #0c1018;
-      --card:    #0f1318;
-      --card2:   #131920;
-      --border:  #1b2030;
-      --border2: #273044;
-      --text:    #dde2f2;
-      --muted:   #4a5272;
-      --dim:     #252e48;
+      --bg2:     #0d1119;
+      --card:    #111620;
+      --card2:   #161d28;
+      --border:  #222a3c;
+      --border2: #2d3a54;
+      --text:    #eaedfa;
+      --muted:   #8e9cbd;
+      --dim:     #5c6a8c;
       --green:   #34d399;
       --blue:    #60a5fa;
       --yellow:  #fbbf24;
@@ -52,10 +52,10 @@
     .drop-btn {
       display: inline-block; padding: 9px 24px;
       background: var(--card2); border: 1px solid var(--border2);
-      border-radius: 8px; font-size: 0.82rem; color: #8898b8; cursor: pointer;
+      border-radius: 8px; font-size: 0.82rem; color: #a0aecf; cursor: pointer;
       transition: all .15s;
     }
-    .drop-btn:hover { background: #1a2232; color: var(--text); }
+    .drop-btn:hover { background: #1e2840; color: var(--text); }
     .drop-hint { margin-top: 14px; font-size: 0.67rem; color: var(--dim); }
     .history-hint {
       margin-top: 24px; font-size: 0.7rem; color: var(--dim); text-align: center;
@@ -138,23 +138,23 @@
     .insights-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
     .insight-card { padding: 16px 18px; }
     .insight-title { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; }
-    .insight-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #0d1018; }
+    .insight-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--border); }
     .insight-row:last-of-type { border-bottom: none; }
-    .insight-rank { font-size: 0.65rem; color: var(--dim); width: 14px; flex-shrink: 0; }
-    .insight-sym { font-size: 0.72rem; font-weight: 700; color: #8898b8; width: 44px; flex-shrink: 0; }
+    .insight-rank { font-size: 0.65rem; color: var(--muted); width: 14px; flex-shrink: 0; }
+    .insight-sym { font-size: 0.72rem; font-weight: 700; color: #a0b0d4; width: 44px; flex-shrink: 0; }
     .insight-name { font-size: 0.68rem; color: var(--muted); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .insight-val { font-size: 0.72rem; font-weight: 600; flex-shrink: 0; }
     .insight-sub { font-size: 0.58rem; color: var(--dim); flex-shrink: 0; white-space: nowrap; }
-    .insight-footer { margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--border); font-size: 0.65rem; color: var(--dim); }
-    .insight-footer strong { color: var(--muted); }
+    .insight-footer { margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--border); font-size: 0.65rem; color: var(--muted); }
+    .insight-footer strong { color: var(--text); }
 
     /* What-If rows */
-    .wi-row { padding: 7px 0; border-bottom: 1px solid #0d1018; }
+    .wi-row { padding: 7px 0; border-bottom: 1px solid var(--border); }
     .wi-row:last-of-type { border-bottom: none; }
-    .wi-action { font-size: 0.68rem; color: var(--muted); margin-bottom: 3px; }
+    .wi-action { font-size: 0.68rem; color: var(--text); margin-bottom: 3px; }
     .wi-result { display: flex; align-items: center; gap: 6px; }
     .wi-new-waci { font-size: 0.78rem; font-weight: 700; }
-    .wi-arrow { font-size: 0.62rem; color: var(--dim); }
+    .wi-arrow { font-size: 0.62rem; color: var(--muted); }
     .wi-saving { font-size: 0.62rem; color: var(--green); }
 
     /* ── Trend ───────────────────────────────────────────────── */
@@ -171,30 +171,30 @@
     .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .header-row {
       display: flex; gap: 10px; padding: 0 8px 8px;
-      font-size: 0.57rem; color: var(--dim); text-transform: uppercase;
-      letter-spacing: .08em; border-bottom: 1px solid #141820; margin-bottom: 2px;
+      font-size: 0.57rem; color: var(--muted); text-transform: uppercase;
+      letter-spacing: .08em; border-bottom: 1px solid var(--border); margin-bottom: 2px;
     }
-    .bar-row { padding: 8px 8px; border-bottom: 1px solid #0a0d13; border-radius: 7px; transition: background .12s; cursor: default; }
-    .bar-row:hover { background: #0f1318; }
+    .bar-row { padding: 8px 8px; border-bottom: 1px solid var(--border); border-radius: 7px; transition: background .12s; cursor: default; }
+    .bar-row:hover { background: #1a2030; }
     .bar-main { display: flex; align-items: center; gap: 10px; }
-    .sym { font-size: 0.7rem; font-weight: 700; color: #7a8aaa; width: 50px; flex-shrink: 0; }
-    .bar-wrap { flex: 1; height: 7px; background: #141820; border-radius: 4px; overflow: hidden; }
+    .sym { font-size: 0.7rem; font-weight: 700; color: #98a8cc; width: 50px; flex-shrink: 0; }
+    .bar-wrap { flex: 1; height: 7px; background: #1a2235; border-radius: 4px; overflow: hidden; }
     .bar-fill { height: 100%; border-radius: 4px; transform-origin: left center; animation: growBar .65s cubic-bezier(.4,0,.2,1) both; }
     @keyframes growBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
     .beitrag-val { font-size: 0.7rem; font-weight: 600; width: 36px; text-align: right; flex-shrink: 0; }
     .waci-badge  { font-size: 0.6rem; width: 60px; text-align: right; color: var(--muted); flex-shrink: 0; }
     .weight-val  { font-size: 0.6rem; color: var(--muted); width: 36px; text-align: right; flex-shrink: 0; }
     .cumul-val   { font-size: 0.6rem; color: var(--dim); width: 40px; text-align: right; flex-shrink: 0; }
-    .tooltip { display: none; font-size: 0.62rem; color: #6a7898; padding: 4px 0 0 60px; line-height: 1.5; }
+    .tooltip { display: none; font-size: 0.62rem; color: #8090b4; padding: 4px 0 0 60px; line-height: 1.5; }
     .bar-row:hover .tooltip { display: block; }
 
     /* ── Sector Section ──────────────────────────────────────── */
     .sector-row { display: grid; grid-template-columns: 1fr 200px; gap: 14px; align-items: start; }
     .sector-table { width: 100%; border-collapse: collapse; }
-    .sector-table th { font-size: 0.57rem; color: var(--dim); text-transform: uppercase; letter-spacing: .08em; padding: 0 8px 8px; text-align: left; border-bottom: 1px solid #141820; font-weight: 500; }
+    .sector-table th { font-size: 0.57rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding: 0 8px 8px; text-align: left; border-bottom: 1px solid var(--border); font-weight: 500; }
     .sector-table th.r, .sector-table td.r { text-align: right; }
-    .sector-table td { padding: 8px; font-size: 0.77rem; border-bottom: 1px solid #0a0d13; }
-    .sector-table tr:hover td { background: #0f1318; }
+    .sector-table td { padding: 8px; font-size: 0.77rem; border-bottom: 1px solid var(--border); }
+    .sector-table tr:hover td { background: #1a2030; }
     .sector-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; vertical-align: middle; flex-shrink: 0; }
     .donut-wrap { display: flex; flex-direction: column; align-items: center; }
     .donut-legend { margin-top: 10px; width: 100%; }
@@ -202,16 +202,16 @@
     .donut-legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
     /* ── Unknown ─────────────────────────────────────────────── */
-    .unknown-box { background: var(--card); border: 1px solid #1e1a10; border-radius: 12px; padding: 14px 16px; margin-top: 20px; }
-    .unknown-title { font-size: 0.62rem; color: #7a6030; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
+    .unknown-box { background: var(--card); border: 1px solid #2e2510; border-radius: 12px; padding: 14px 16px; margin-top: 20px; }
+    .unknown-title { font-size: 0.62rem; color: #c09040; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
     .unknown-list { display: flex; flex-wrap: wrap; gap: 6px; }
-    .unknown-chip { padding: 3px 10px; background: #141820; border: 1px solid var(--border2); border-radius: 20px; font-size: 0.67rem; color: #8898b8; }
+    .unknown-chip { padding: 3px 10px; background: #1a2030; border: 1px solid var(--border2); border-radius: 20px; font-size: 0.67rem; color: #a0b0d4; }
 
     /* ── Bottom Benchmark Card ───────────────────────────────── */
     .bottom-bm { padding: 16px 20px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 
     /* ── Disclaimer ──────────────────────────────────────────── */
-    .disclaimer { font-size: 0.58rem; color: var(--dim); margin-top: 24px; line-height: 1.7; }
+    .disclaimer { font-size: 0.58rem; color: var(--muted); margin-top: 24px; line-height: 1.7; }
 
     /* ── Responsive ──────────────────────────────────────────── */
     @media (max-width: 780px) {
@@ -710,7 +710,7 @@ function renderInsights(a) {
     <div class="insight-title">💡 Optimierungs-Potenzial</div>
     ${a.whatIf.map((w,i)=>`
       <div class="wi-row">
-        <div class="wi-action">${i===0?'Wenn Sie':'Zusätzlich'} <strong style="color:#8898b8">${w.sym}</strong> liquidieren:</div>
+        <div class="wi-action">${i===0?'Wenn Sie':'Zusätzlich'} <strong style="color:#a0b0d4">${w.sym}</strong> liquidieren:</div>
         <div class="wi-result">
           <span class="wi-new-waci" style="color:${waciColor(w.newWACI)}">${fmt(w.newWACI)}</span>
           <span class="wi-arrow">tCO₂/$M</span>
@@ -767,7 +767,7 @@ function renderChart(positions) {
     const pct=(p.contribution/maxB*100).toFixed(1);
     const vC=bColor(p.contribution);
     const delay=Math.min(idx*0.018,0.5);
-    const est=p.isEstimated?'<span title="Sektor-Schätzwert" style="color:#3a4462">~</span>':'';
+    const est=p.isEstimated?'<span title="Sektor-Schätzwert" style="color:#7080a0">~</span>':'';
     cumul+=p.contribution;
     const cumulPct=(cumul/positions.reduce((s,q)=>s+q.contribution,0)*100).toFixed(0);
     const wciNote = p.waci>300?'Fossil':p.waci>80?'Erhöht':p.waci>20?'Moderat':'Gering';
@@ -780,7 +780,7 @@ function renderChart(positions) {
         <span class="beitrag-val" style="color:${vC}">${fmt(p.contribution)}</span>
         <span class="waci-badge">${est}${p.waci}</span>
         <span class="weight-val">${(p.weight*100).toFixed(1)}%</span>
-        <span class="cumul-val" style="color:${cumulPct>80?'#f87171':cumulPct>50?'#fbbf24':'#2a3450'}">${cumulPct}%</span>
+        <span class="cumul-val" style="color:${cumulPct>80?'#f87171':cumulPct>50?'#fbbf24':'#5c6a8c'}">${cumulPct}%</span>
       </div>
       <div class="tooltip">${p.name} · <span style="color:${waciColor(p.waci)}">${wciNote} (WACI ${p.waci})</span> · ${p.reason} · Wert ${fmtEur(p.val)} €</div>
     </div>`;
@@ -796,16 +796,16 @@ function renderSectorTable(sectorList, totalWACI) {
     const barW=(s.contribution/maxC*60).toFixed(1);
     return `<tr>
       <td><span class="sector-dot" style="background:${sectorColor(s.name)}"></span>${s.name}</td>
-      <td class="r" style="color:#4a5272">${s.count}</td>
+      <td class="r" style="color:#8e9cbd">${s.count}</td>
       <td class="r" style="color:${ac};font-weight:600">${fmt(s.avgWaci,0)}</td>
-      <td class="r" style="color:#4a5272">${(s.weight*100).toFixed(1)}%</td>
+      <td class="r" style="color:#8e9cbd">${(s.weight*100).toFixed(1)}%</td>
       <td class="r" style="color:${cc};font-weight:600">${fmt(s.contribution)}</td>
       <td class="r" style="white-space:nowrap">
         <svg width="64" height="8" style="vertical-align:middle;margin-right:4px">
-          <rect x="0" y="1" width="60" height="6" rx="3" fill="#141820"/>
+          <rect x="0" y="1" width="60" height="6" rx="3" fill="#1a2235"/>
           <rect x="0" y="1" width="${barW}" height="6" rx="3" fill="${ac}"/>
         </svg>
-        <span style="font-size:.62rem;color:#4a5272">${share}%</span>
+        <span style="font-size:.62rem;color:#8e9cbd">${share}%</span>
       </td>
     </tr>`;
   }).join('');
@@ -839,15 +839,15 @@ function renderDonut(sectorList, totalWACI) {
 
   const svg=`<svg viewBox="0 0 160 160" style="width:160px;height:160px;display:block">
     ${paths.map(p=>`<path d="${p.d}" fill="${p.color}" opacity="0.85" stroke="#080b11" stroke-width="1.5"><title>${p.name}: ${p.pct}%</title></path>`).join('')}
-    <text x="80" y="76" text-anchor="middle" fill="#4a5272" font-size="9" font-family="system-ui">WACI</text>
-    <text x="80" y="90" text-anchor="middle" fill="#dde2f2" font-size="16" font-weight="700" font-family="system-ui">${Math.round(totalWACI)}</text>
+    <text x="80" y="76" text-anchor="middle" fill="#8e9cbd" font-size="9" font-family="system-ui">WACI</text>
+    <text x="80" y="90" text-anchor="middle" fill="#eaedfa" font-size="16" font-weight="700" font-family="system-ui">${Math.round(totalWACI)}</text>
   </svg>`;
 
   const legend=paths.slice(0,6).map(p=>
     `<div class="donut-legend-item">
       <div class="donut-legend-dot" style="background:${p.color}"></div>
       <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.name}</span>
-      <span style="color:#2a3450">${p.pct}%</span>
+      <span style="color:#8e9cbd">${p.pct}%</span>
     </div>`
   ).join('');
 
@@ -873,20 +873,20 @@ function renderBottomBm(a) {
   const cars=(a.footprintT/2.3).toFixed(1);
   return `
     <div>
-      <div style="font-size:.62rem;color:#4a5272;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Benchmark-Ergebnis</div>
+      <div style="font-size:.62rem;color:#8e9cbd;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Benchmark-Ergebnis</div>
       <div style="font-size:.9rem">
         Dein WACI <span class="${waciClass(a.portfolioWACI)}" style="font-weight:700">${fmt(a.portfolioWACI)}</span>
         vs. MSCI World <span class="neutral" style="font-weight:700">180,0</span>
         — <span class="${a.reduction>0?'green':'red'}">${a.reduction>0?'−':'+'} ${Math.abs(Math.round(a.reduction*100))}%</span> besser
       </div>
-      <div style="font-size:.65rem;color:#2a3450;margin-top:4px">
+      <div style="font-size:.65rem;color:#8e9cbd;margin-top:4px">
         ~${a.footprintT.toFixed(1)} t CO₂e/Jahr ≈ ${flights} Transatlantikflüge ≈ ${cars} PKW-Jahre
       </div>
     </div>
     <div style="text-align:right">
-      <div style="font-size:.62rem;color:#4a5272;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Haupttreiber (&gt;4%)</div>
+      <div style="font-size:.62rem;color:#8e9cbd;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Haupttreiber (&gt;4%)</div>
       <div style="font-size:.85rem;color:#fbbf24;font-weight:500">${drivers}</div>
-      <div style="font-size:.62rem;color:#2a3450;margin-top:2px">= ${dpct}% des Portfolio-WACI</div>
+      <div style="font-size:.62rem;color:#8e9cbd;margin-top:2px">= ${dpct}% des Portfolio-WACI</div>
     </div>`;
 }
 
