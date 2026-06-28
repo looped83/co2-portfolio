@@ -5,439 +5,235 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio CO₂ Analyzer</title>
   <style>
+    :root {
+      --bg:      #080b11;
+      --bg2:     #0c1018;
+      --card:    #0f1318;
+      --card2:   #131920;
+      --border:  #1b2030;
+      --border2: #273044;
+      --text:    #dde2f2;
+      --muted:   #4a5272;
+      --dim:     #252e48;
+      --green:   #34d399;
+      --blue:    #60a5fa;
+      --yellow:  #fbbf24;
+      --red:     #f87171;
+      --purple:  #a78bfa;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0d0f14;
-      color: #e8eaf0;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
     }
 
-    /* ── Upload Screen ──────────────────────────────────── */
+    /* ── Upload ─────────────────────────────────────────────── */
     #upload-screen {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 32px 20px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 100vh; padding: 40px 20px;
     }
-
     .upload-logo {
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: #5a6180;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 48px;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 52px;
     }
-
     .drop-zone {
-      border: 2px dashed #1f2433;
-      border-radius: 20px;
-      padding: 56px 40px;
-      text-align: center;
-      width: 100%;
-      max-width: 460px;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      background: #161921;
-      user-select: none;
+      border: 2px dashed var(--border2); border-radius: 20px;
+      padding: 56px 44px; text-align: center;
+      width: 100%; max-width: 460px; cursor: pointer;
+      background: var(--card); transition: all .25s; user-select: none;
     }
-
-    .drop-zone.drag-over {
-      border-color: #34d399;
-      background: #131d1a;
-    }
-
-    .drop-icon {
-      width: 44px;
-      height: 44px;
-      margin: 0 auto 18px;
-      color: #2a3148;
-    }
-
-    .drop-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #e8eaf0;
-      margin-bottom: 6px;
-    }
-
-    .drop-subtitle {
-      font-size: 0.78rem;
-      color: #5a6180;
-      margin-bottom: 24px;
-    }
-
+    .drop-zone.drag-over { border-color: var(--green); background: #101d17; }
+    .drop-icon { width: 44px; height: 44px; margin: 0 auto 18px; color: var(--dim); }
+    .drop-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 6px; }
+    .drop-subtitle { font-size: 0.78rem; color: var(--muted); margin-bottom: 26px; }
     .drop-btn {
-      display: inline-block;
-      padding: 9px 22px;
-      background: #1f2433;
-      border: 1px solid #2a3148;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      color: #94a3b8;
-      cursor: pointer;
-      transition: all 0.15s;
+      display: inline-block; padding: 9px 24px;
+      background: var(--card2); border: 1px solid var(--border2);
+      border-radius: 8px; font-size: 0.82rem; color: #8898b8; cursor: pointer;
+      transition: all .15s;
     }
-
-    .drop-btn:hover { background: #252d3d; color: #e8eaf0; }
-
-    .drop-hint {
-      margin-top: 14px;
-      font-size: 0.68rem;
-      color: #2a3148;
-    }
-
+    .drop-btn:hover { background: #1a2232; color: var(--text); }
+    .drop-hint { margin-top: 14px; font-size: 0.67rem; color: var(--dim); }
     .history-hint {
-      margin-top: 24px;
-      font-size: 0.7rem;
-      color: #3d4460;
-      text-align: center;
+      margin-top: 24px; font-size: 0.7rem; color: var(--dim); text-align: center;
     }
-
     .history-hint button {
-      background: none;
-      border: none;
-      color: #5a6180;
-      cursor: pointer;
-      font-size: 0.7rem;
-      text-decoration: underline;
-      padding: 0;
-      margin-left: 4px;
+      background: none; border: none; color: var(--muted); cursor: pointer;
+      font-size: 0.7rem; text-decoration: underline; padding: 0; margin-left: 4px;
     }
+    .history-hint button:hover { color: #8898b8; }
 
-    .history-hint button:hover { color: #94a3b8; }
+    /* ── Dashboard wrapper ───────────────────────────────────── */
+    #dashboard { max-width: 960px; margin: 0 auto; padding: 32px 20px 72px; }
 
-    /* ── Dashboard ───────────────────────────────────────── */
-    #dashboard {
-      max-width: 940px;
-      margin: 0 auto;
-      padding: 32px 20px 64px;
-    }
-
+    /* ── Header ─────────────────────────────────────────────── */
     .dash-header {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 28px;
-      gap: 12px;
+      display: flex; align-items: flex-start;
+      justify-content: space-between; margin-bottom: 28px; gap: 12px;
     }
-
-    .portfolio-name {
-      font-size: 0.68rem;
-      font-weight: 500;
-      color: #7c8298;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
+    .portfolio-eyebrow {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
     }
-
-    .portfolio-meta { font-size: 0.68rem; color: #3d4460; }
-
+    .portfolio-meta { font-size: 0.67rem; color: var(--dim); }
     .reset-btn {
-      padding: 8px 16px;
-      background: #161921;
-      border: 1px solid #1f2433;
-      border-radius: 8px;
-      font-size: 0.72rem;
-      color: #5a6180;
-      cursor: pointer;
-      transition: all 0.15s;
-      white-space: nowrap;
-      flex-shrink: 0;
+      padding: 7px 16px; background: var(--card); border: 1px solid var(--border);
+      border-radius: 8px; font-size: 0.7rem; color: var(--muted);
+      cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all .15s;
     }
+    .reset-btn:hover { border-color: var(--border2); color: #8898b8; }
 
-    .reset-btn:hover { border-color: #2a3148; color: #94a3b8; }
-
-    /* ── KPI Row ────────────────────────────────────────── */
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      margin-bottom: 28px;
+    /* ── Base card ───────────────────────────────────────────── */
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
     }
+    .card-p { padding: 18px 20px; }
 
-    .kpi {
-      background: #161921;
-      border: 1px solid #1f2433;
-      border-radius: 12px;
-      padding: 16px 18px;
+    /* ── Score Row (Gauge + Benchmarks) ──────────────────────── */
+    .score-row {
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 14px; margin-bottom: 14px;
     }
+    .gauge-card { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 22px 16px 18px; }
+    .gauge-eyebrow { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 8px; }
+    .gauge-footer { margin-top: 10px; text-align: center; }
+    .footprint-tons { font-size: 1.4rem; font-weight: 700; letter-spacing: -.02em; }
+    .footprint-sub  { font-size: 0.62rem; color: var(--muted); margin-top: 2px; }
+    .footprint-equiv { font-size: 0.65rem; color: var(--dim); margin-top: 4px; }
 
-    .kpi-label {
-      font-size: 0.62rem;
-      color: #5a6180;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 8px;
-    }
+    .bm-card { padding: 18px 20px; }
+    .bm-title { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 14px; }
+    .bm-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .bm-row:last-child { margin-bottom: 0; }
+    .bm-name { font-size: 0.72rem; color: var(--muted); width: 160px; flex-shrink: 0; }
+    .bm-name.highlight { color: var(--text); font-weight: 600; }
+    .bm-track { flex: 1; height: 6px; background: var(--bg2); border-radius: 3px; overflow: hidden; position: relative; }
+    .bm-fill { height: 100%; border-radius: 3px; }
+    .bm-val { font-size: 0.7rem; font-weight: 600; width: 38px; text-align: right; flex-shrink: 0; }
+    .bm-note { font-size: 0.6rem; color: var(--dim); width: 88px; flex-shrink: 0; }
+    .bm-separator { height: 1px; background: var(--border); margin: 8px 0; }
 
-    .kpi-value {
-      font-size: 1.75rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1;
-    }
+    /* ── KPI Row ─────────────────────────────────────────────── */
+    .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 14px; }
+    .kpi { padding: 16px 18px; }
+    .kpi-label { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 9px; }
+    .kpi-value { font-size: 1.7rem; font-weight: 700; letter-spacing: -.025em; line-height: 1; }
+    .kpi-sub { font-size: 0.6rem; color: var(--muted); margin-top: 5px; }
+    .green  { color: var(--green); }
+    .red    { color: var(--red);   }
+    .yellow { color: var(--yellow);}
+    .blue   { color: var(--blue);  }
+    .purple { color: var(--purple);}
+    .neutral{ color: #94a3b8;      }
+    .kpi-value.green  { text-shadow: 0 0 24px rgba(52,211,153,.35); }
+    .kpi-value.red    { text-shadow: 0 0 24px rgba(248,113,113,.35); }
+    .kpi-value.yellow { text-shadow: 0 0 24px rgba(251,191,36,.35); }
+    .kpi-value.blue   { text-shadow: 0 0 24px rgba(96,165,250,.35); }
 
-    .kpi-sub { font-size: 0.62rem; color: #5a6180; margin-top: 5px; }
+    /* ── Insights Row ────────────────────────────────────────── */
+    .insights-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
+    .insight-card { padding: 16px 18px; }
+    .insight-title { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; }
+    .insight-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid #0d1018; }
+    .insight-row:last-of-type { border-bottom: none; }
+    .insight-rank { font-size: 0.65rem; color: var(--dim); width: 14px; flex-shrink: 0; }
+    .insight-sym { font-size: 0.72rem; font-weight: 700; color: #8898b8; width: 44px; flex-shrink: 0; }
+    .insight-name { font-size: 0.68rem; color: var(--muted); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .insight-val { font-size: 0.72rem; font-weight: 600; flex-shrink: 0; }
+    .insight-sub { font-size: 0.58rem; color: var(--dim); flex-shrink: 0; white-space: nowrap; }
+    .insight-footer { margin-top: 10px; padding-top: 9px; border-top: 1px solid var(--border); font-size: 0.65rem; color: var(--dim); }
+    .insight-footer strong { color: var(--muted); }
 
-    .green  { color: #34d399; }
-    .red    { color: #f87171; }
-    .yellow { color: #fbbf24; }
-    .blue   { color: #60a5fa; }
-    .neutral{ color: #94a3b8; }
+    /* What-If rows */
+    .wi-row { padding: 7px 0; border-bottom: 1px solid #0d1018; }
+    .wi-row:last-of-type { border-bottom: none; }
+    .wi-action { font-size: 0.68rem; color: var(--muted); margin-bottom: 3px; }
+    .wi-result { display: flex; align-items: center; gap: 6px; }
+    .wi-new-waci { font-size: 0.78rem; font-weight: 700; }
+    .wi-arrow { font-size: 0.62rem; color: var(--dim); }
+    .wi-saving { font-size: 0.62rem; color: var(--green); }
 
-    /* ── Trend Section ──────────────────────────────────── */
-    .trend-section {
-      background: #161921;
-      border: 1px solid #1f2433;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 24px;
-    }
+    /* ── Trend ───────────────────────────────────────────────── */
+    .trend-card { padding: 16px 20px; margin-bottom: 14px; }
+    .trend-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .trend-label { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; }
+    .trend-current { font-size: 0.9rem; font-weight: 700; }
+    .trend-dates { display: flex; justify-content: space-between; font-size: 0.58rem; color: var(--dim); margin-top: 5px; }
 
-    .trend-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    /* ── Section Title ──────────────────────────────────── */
-    .section-title {
-      font-size: 0.65rem;
-      color: #5a6180;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 12px;
-      margin-top: 32px;
-    }
-
-    /* ── Legend ─────────────────────────────────────────── */
-    .legend {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-      margin-top: 4px;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.63rem;
-      color: #5a6180;
-    }
-
-    .legend-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    /* ── Column Headers ─────────────────────────────────── */
+    /* ── Chart ───────────────────────────────────────────────── */
+    .section-title { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; margin-top: 28px; }
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.62rem; color: var(--muted); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .header-row {
-      display: flex;
-      gap: 12px;
-      padding: 0 8px 8px;
-      font-size: 0.58rem;
-      color: #2a3148;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      border-bottom: 1px solid #1a1e2a;
-      margin-bottom: 2px;
+      display: flex; gap: 10px; padding: 0 8px 8px;
+      font-size: 0.57rem; color: var(--dim); text-transform: uppercase;
+      letter-spacing: .08em; border-bottom: 1px solid #141820; margin-bottom: 2px;
     }
-
-    /* ── Bar Rows ────────────────────────────────────────── */
-    .bar-row {
-      padding: 9px 8px;
-      border-bottom: 1px solid #0f1117;
-      cursor: default;
-      transition: background 0.12s;
-      border-radius: 6px;
-    }
-
-    .bar-row:hover { background: #161921; }
-
-    .bar-main {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .sym {
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #94a3b8;
-      width: 52px;
-      flex-shrink: 0;
-    }
-
-    .bar-wrap {
-      flex: 1;
-      height: 8px;
-      background: #1a1e2a;
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .bar-fill {
-      height: 100%;
-      border-radius: 4px;
-      transform-origin: left center;
-      animation: growBar 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
-    }
-
-    @keyframes growBar {
-      from { transform: scaleX(0); }
-      to   { transform: scaleX(1); }
-    }
-
-    .beitrag-val {
-      font-size: 0.72rem;
-      font-weight: 600;
-      width: 38px;
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .waci-badge {
-      font-size: 0.62rem;
-      width: 64px;
-      text-align: right;
-      color: #5a6180;
-      flex-shrink: 0;
-    }
-
-    .weight-val {
-      font-size: 0.62rem;
-      color: #5a6180;
-      width: 38px;
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .tooltip {
-      display: none;
-      font-size: 0.63rem;
-      color: #7c8298;
-      padding: 4px 0 0 64px;
-      line-height: 1.4;
-    }
-
+    .bar-row { padding: 8px 8px; border-bottom: 1px solid #0a0d13; border-radius: 7px; transition: background .12s; cursor: default; }
+    .bar-row:hover { background: #0f1318; }
+    .bar-main { display: flex; align-items: center; gap: 10px; }
+    .sym { font-size: 0.7rem; font-weight: 700; color: #7a8aaa; width: 50px; flex-shrink: 0; }
+    .bar-wrap { flex: 1; height: 7px; background: #141820; border-radius: 4px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 4px; transform-origin: left center; animation: growBar .65s cubic-bezier(.4,0,.2,1) both; }
+    @keyframes growBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+    .beitrag-val { font-size: 0.7rem; font-weight: 600; width: 36px; text-align: right; flex-shrink: 0; }
+    .waci-badge  { font-size: 0.6rem; width: 60px; text-align: right; color: var(--muted); flex-shrink: 0; }
+    .weight-val  { font-size: 0.6rem; color: var(--muted); width: 36px; text-align: right; flex-shrink: 0; }
+    .cumul-val   { font-size: 0.6rem; color: var(--dim); width: 40px; text-align: right; flex-shrink: 0; }
+    .tooltip { display: none; font-size: 0.62rem; color: #6a7898; padding: 4px 0 0 60px; line-height: 1.5; }
     .bar-row:hover .tooltip { display: block; }
 
-    /* ── Sector Table ────────────────────────────────────── */
-    .sector-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+    /* ── Sector Section ──────────────────────────────────────── */
+    .sector-row { display: grid; grid-template-columns: 1fr 200px; gap: 14px; align-items: start; }
+    .sector-table { width: 100%; border-collapse: collapse; }
+    .sector-table th { font-size: 0.57rem; color: var(--dim); text-transform: uppercase; letter-spacing: .08em; padding: 0 8px 8px; text-align: left; border-bottom: 1px solid #141820; font-weight: 500; }
+    .sector-table th.r, .sector-table td.r { text-align: right; }
+    .sector-table td { padding: 8px; font-size: 0.77rem; border-bottom: 1px solid #0a0d13; }
+    .sector-table tr:hover td { background: #0f1318; }
+    .sector-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; vertical-align: middle; flex-shrink: 0; }
+    .donut-wrap { display: flex; flex-direction: column; align-items: center; }
+    .donut-legend { margin-top: 10px; width: 100%; }
+    .donut-legend-item { display: flex; align-items: center; gap: 6px; padding: 3px 0; font-size: 0.62rem; color: var(--muted); }
+    .donut-legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
-    .sector-table th {
-      font-size: 0.58rem;
-      color: #2a3148;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0 8px 8px;
-      text-align: left;
-      border-bottom: 1px solid #1a1e2a;
-      font-weight: 500;
-    }
-
-    .sector-table th.right,
-    .sector-table td.right { text-align: right; }
-
-    .sector-table td {
-      padding: 8px;
-      font-size: 0.78rem;
-      border-bottom: 1px solid #0f1117;
-    }
-
-    .sector-table tr:hover td { background: #161921; }
-
-    .sector-mini-bar {
-      display: inline-block;
-      height: 4px;
-      border-radius: 2px;
-      margin-right: 6px;
-      vertical-align: middle;
-    }
-
-    /* ── Benchmark Card ──────────────────────────────────── */
-    .benchmark-card {
-      background: #161921;
-      border: 1px solid #1f2433;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-top: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    /* ── Unknown Section ─────────────────────────────────── */
-    .unknown-box {
-      background: #161921;
-      border: 1px solid #2a2010;
-      border-radius: 12px;
-      padding: 14px 16px;
-      margin-top: 24px;
-    }
-
-    .unknown-title {
-      font-size: 0.65rem;
-      color: #92733a;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 10px;
-    }
-
+    /* ── Unknown ─────────────────────────────────────────────── */
+    .unknown-box { background: var(--card); border: 1px solid #1e1a10; border-radius: 12px; padding: 14px 16px; margin-top: 20px; }
+    .unknown-title { font-size: 0.62rem; color: #7a6030; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }
     .unknown-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .unknown-chip { padding: 3px 10px; background: #141820; border: 1px solid var(--border2); border-radius: 20px; font-size: 0.67rem; color: #8898b8; }
 
-    .unknown-chip {
-      padding: 3px 10px;
-      background: #1a1e2a;
-      border: 1px solid #2a3148;
-      border-radius: 20px;
-      font-size: 0.68rem;
-      color: #94a3b8;
-    }
+    /* ── Bottom Benchmark Card ───────────────────────────────── */
+    .bottom-bm { padding: 16px 20px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 
-    /* ── Disclaimer ──────────────────────────────────────── */
-    .disclaimer {
-      font-size: 0.6rem;
-      color: #2a3148;
-      margin-top: 28px;
-      line-height: 1.7;
-    }
+    /* ── Disclaimer ──────────────────────────────────────────── */
+    .disclaimer { font-size: 0.58rem; color: var(--dim); margin-top: 24px; line-height: 1.7; }
 
-    /* ── Responsive ──────────────────────────────────────── */
-    @media (max-width: 720px) {
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 780px) {
+      .score-row { grid-template-columns: 1fr; }
+      .gauge-card { flex-direction: row; gap: 20px; padding: 16px 18px; }
       .kpi-row { grid-template-columns: repeat(3, 1fr); }
-      .kpi-row .kpi:nth-child(4),
-      .kpi-row .kpi:nth-child(5) { grid-column: span 1; }
+      .insights-row { grid-template-columns: 1fr; }
+      .sector-row { grid-template-columns: 1fr; }
     }
-
-    @media (max-width: 520px) {
+    @media (max-width: 540px) {
       .kpi-row { grid-template-columns: 1fr 1fr; }
       .kpi-row .kpi:nth-child(5) { grid-column: span 2; }
       .kpi-value { font-size: 1.4rem; }
-      .waci-badge { display: none; }
+      .waci-badge, .cumul-val { display: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- ── Upload Screen ─────────────────────────────────────────── -->
+<!-- ── Upload ──────────────────────────────────────────────────── -->
 <div id="upload-screen">
   <div class="upload-logo">Portfolio CO₂ Analyzer</div>
-
   <div class="drop-zone" id="drop-zone">
     <svg class="drop-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
       <rect x="6" y="14" width="36" height="28" rx="3" stroke-linejoin="round"/>
@@ -447,736 +243,718 @@
     <div class="drop-title">CSV hochladen</div>
     <div class="drop-subtitle">DivvyDiary-Export · semikolongetrennt</div>
     <div class="drop-btn" id="drop-btn-label">Datei auswählen</div>
-    <div class="drop-hint">oder per Drag &amp; Drop hier ablegen</div>
+    <div class="drop-hint">oder per Drag &amp; Drop ablegen</div>
     <input type="file" id="file-input" accept=".csv" style="display:none">
   </div>
-
-  <div class="history-hint" id="history-hint" style="display:none">
-    Letzte Analyse verfügbar —
-    <button id="load-last-btn">letzte Ansicht laden</button>
-  </div>
+  <div class="history-hint" id="history-hint" style="display:none"></div>
 </div>
 
-<!-- ── Dashboard ─────────────────────────────────────────────── -->
+<!-- ── Dashboard ───────────────────────────────────────────────── -->
 <div id="dashboard" style="display:none">
 
-  <div id="dashboard-inner">
-
-    <div class="dash-header">
-      <div>
-        <div class="portfolio-name">Portfolio CO₂-Intensität (WACI)</div>
-        <div class="portfolio-meta" id="dash-meta"></div>
-      </div>
-      <button class="reset-btn" id="reset-btn">↑ Neue Datei</button>
+  <div class="dash-header">
+    <div>
+      <div class="portfolio-eyebrow">Portfolio CO₂-Intensität (WACI)</div>
+      <div class="portfolio-meta" id="dash-meta"></div>
     </div>
+    <button class="reset-btn" id="reset-btn">↑ Neue Datei</button>
+  </div>
 
-    <div class="kpi-row" id="kpi-row"></div>
+  <!-- Score Row -->
+  <div class="score-row">
+    <div class="card gauge-card" id="gauge-card"></div>
+    <div class="card bm-card" id="bm-card"></div>
+  </div>
 
-    <div id="trend-section"></div>
+  <!-- KPI Row -->
+  <div class="kpi-row" id="kpi-row"></div>
 
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Fossil/Hoch (&gt;300)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Mittel (80–300)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Niedrig (20–80)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div>Sehr gering (&lt;20)</div>
-    </div>
+  <!-- Insights Row -->
+  <div class="insights-row" id="insights-row"></div>
 
-    <div class="section-title">CO₂-Beitrag je Position (gewichtet) — sortiert nach Beitrag</div>
+  <!-- Trend -->
+  <div id="trend-section"></div>
 
-    <div class="header-row">
-      <span style="width:52px;flex-shrink:0">Symbol</span>
-      <span style="flex:1">Beitrag zum Portfolio-WACI</span>
-      <span style="width:38px;text-align:right;flex-shrink:0">Beitr.</span>
-      <span style="width:64px;text-align:right;flex-shrink:0">WACI roh</span>
-      <span style="width:38px;text-align:right;flex-shrink:0">Gew.</span>
-    </div>
+  <!-- Chart -->
+  <div class="section-title">CO₂-Beitrag je Position — sortiert nach Beitrag</div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Fossil/Hoch (&gt;300)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Mittel (80–300)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Niedrig (20–80)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div>Sehr gering (&lt;20)</div>
+  </div>
+  <div class="header-row">
+    <span style="width:50px;flex-shrink:0">Symbol</span>
+    <span style="flex:1">Beitrag</span>
+    <span style="width:36px;text-align:right;flex-shrink:0">Beitr.</span>
+    <span style="width:60px;text-align:right;flex-shrink:0">WACI roh</span>
+    <span style="width:36px;text-align:right;flex-shrink:0">Gew.</span>
+    <span style="width:40px;text-align:right;flex-shrink:0">Kum.%</span>
+  </div>
+  <div id="chart-container"></div>
 
-    <div id="chart-container"></div>
-
-    <div class="section-title">Sektor-Analyse</div>
-    <table class="sector-table">
-      <thead>
-        <tr>
+  <!-- Sector -->
+  <div class="section-title" style="margin-top:32px">Sektor-Analyse</div>
+  <div class="sector-row">
+    <div>
+      <table class="sector-table">
+        <thead><tr>
           <th>Sektor</th>
-          <th class="right">Pos.</th>
-          <th class="right">WACI Ø</th>
-          <th class="right">Gewicht</th>
-          <th class="right">Beitrag</th>
-          <th class="right" style="width:100px">Anteil</th>
-        </tr>
-      </thead>
-      <tbody id="sector-tbody"></tbody>
-    </table>
-
-    <div id="unknown-section"></div>
-
-    <div class="benchmark-card" id="benchmark-card"></div>
-
-    <div class="disclaimer">
-      WACI-Werte basieren auf öffentlichen Branchendurchschnittswerten (MSCI ESG, Sustainalytics, CDP, 2022–2024).
-      Keine verifizierten Unternehmensdaten – Schätzung mit ±20–30% Toleranz.
-      ETF-Werte = gewichtete Sektordurchschnitte. ~ = Sektor-basierter Schätzwert (Symbol nicht in Datenbank).
+          <th class="r">Pos.</th>
+          <th class="r">WACI Ø</th>
+          <th class="r">Gewicht</th>
+          <th class="r">Beitrag</th>
+          <th class="r">Anteil</th>
+        </tr></thead>
+        <tbody id="sector-tbody"></tbody>
+      </table>
     </div>
+    <div class="donut-wrap">
+      <div id="donut-container"></div>
+      <div class="donut-legend" id="donut-legend"></div>
+    </div>
+  </div>
 
+  <div id="unknown-section"></div>
+  <div class="card bottom-bm" id="bottom-bm"></div>
+  <div class="disclaimer">
+    WACI-Werte basieren auf öffentlichen Branchendurchschnittswerten (MSCI ESG, Sustainalytics, CDP, 2022–2024).
+    Keine verifizierten Unternehmensdaten – Schätzung ±20–30%. ETF-Werte = gewichtete Sektordurchschnitte.
+    CO₂-Fußabdruck: finanzierte Emissionen (Portfolio-Wert / $1M × WACI). ~ = Sektor-Schätzwert.
   </div>
 </div>
 
 <script>
 // ============================================================
-// WACI DATABASE  (tCO₂e per $M revenue, Scope 1+2, ~2023)
+// WACI DATABASE  (tCO₂e / $M revenue, Scope 1+2, ~2023)
 // ============================================================
 const WACI_DB = {
-  // ── Energy ──
-  CVX:   { waci: 850, reason: 'Fossil – Ölproduktion & Raffinerien' },
-  XOM:   { waci: 820, reason: 'Fossil – Ölproduktion & Raffinerien' },
-  ENB:   { waci: 620, reason: 'Fossil – Pipelinetransport' },
-  SHEL:  { waci: 600, reason: 'Fossil – Integrierter Konzern' },
-  RDSA:  { waci: 600, reason: 'Fossil – Integrierter Konzern' },
-  BP:    { waci: 570, reason: 'Fossil – Integrierter Konzern' },
-  TTE:   { waci: 540, reason: 'Fossil – Integrierter Konzern' },
-  COP:   { waci: 700, reason: 'Fossil – Exploration & Produktion' },
-  OXY:   { waci: 750, reason: 'Fossil – Ölproduktion' },
-  PSX:   { waci: 600, reason: 'Fossil – Raffinerien' },
-  MPC:   { waci: 580, reason: 'Fossil – Raffinerien' },
-  VLO:   { waci: 560, reason: 'Fossil – Raffinerien' },
-  SLB:   { waci: 400, reason: 'Ölfeldausrüstung' },
-
-  // ── Tobacco ──
-  MO:    { waci: 120, reason: 'Tabak – Produktion & Logistik' },
-  BATS:  { waci: 130, reason: 'Tabak – Produktion & Logistik' },
-  BTI:   { waci: 130, reason: 'Tabak – Produktion & Logistik' },
-  IMB:   { waci: 130, reason: 'Tabak – Produktion & Logistik' },
-  PM:    { waci: 115, reason: 'Tabak – Produktion & Logistik' },
-
-  // ── Materials / Chemicals ──
-  BAS:   { waci: 350, reason: 'Chemie – Grundstoffe, energieintensiv' },
-  LIN:   { waci: 220, reason: 'Industriegase – energieintensiv' },
-  APD:   { waci: 200, reason: 'Industriegase – energieintensiv' },
-  NUE:   { waci: 400, reason: 'Stahl – EAF-Produktion' },
-  PKG:   { waci: 180, reason: 'Verpackung – Papier & Karton' },
-  WRK:   { waci: 200, reason: 'Verpackung – Papier' },
-
-  // ── Industrials / Logistics ──
-  DHL:   { waci: 180, reason: 'Logistik – Flotte & Luftfracht' },
-  FAST:  { waci: 80,  reason: 'Industrie – Vertrieb & Logistik' },
-  CAT:   { waci: 150, reason: 'Maschinenbau – Produktion' },
-  MMM:   { waci: 120, reason: 'Industrie – diversifiziert' },
-  HON:   { waci: 90,  reason: 'Industrie – Automatisierung & Aero' },
-  EMR:   { waci: 100, reason: 'Industrie – Automatisierung' },
-  UPS:   { waci: 160, reason: 'Logistik – Kurierdienste' },
-  FDX:   { waci: 170, reason: 'Logistik – Luftfracht' },
-  GE:    { waci: 110, reason: 'Industrie – Turbinen & Aviation' },
-  DE:    { waci: 120, reason: 'Maschinenbau – Landmaschinen' },
-  ROK:   { waci: 80,  reason: 'Industrie – Automatisierung' },
-
-  // ── Consumer Staples ──
-  KO:    { waci: 45,  reason: 'FMCG – Produktion & Verpackung' },
-  PEP:   { waci: 40,  reason: 'FMCG – Produktion & Verpackung' },
-  PG:    { waci: 30,  reason: 'FMCG – Haushalt & Körperpflege' },
-  GIS:   { waci: 45,  reason: 'FMCG – Lebensmittelproduktion' },
-  HRL:   { waci: 50,  reason: 'Lebensmittel – Fleischverarbeitung' },
-  KHC:   { waci: 45,  reason: 'FMCG – Lebensmittel & Saucen' },
-  ULVR:  { waci: 35,  reason: 'FMCG – Konsumgüter' },
-  UNVR:  { waci: 35,  reason: 'FMCG – Konsumgüter' },
-  MDLZ:  { waci: 40,  reason: 'FMCG – Snacks & Süßwaren' },
-  CL:    { waci: 30,  reason: 'FMCG – Körperpflege' },
-  MICC:  { waci: 30,  reason: 'FMCG – Eisproduktion' },
-  STZ:   { waci: 45,  reason: 'Getränke – Bier & Spirituosen' },
-  KMB:   { waci: 35,  reason: 'FMCG – Papier & Hygiene' },
-
-  // ── Healthcare ──
-  JNJ:   { waci: 20,  reason: 'Pharma – Produktion & Logistik' },
-  ABT:   { waci: 18,  reason: 'MedTech – Produktion' },
-  ABBV:  { waci: 15,  reason: 'Pharma – Biologika-Produktion' },
-  BMY:   { waci: 20,  reason: 'Pharma – Produktion' },
-  CVS:   { waci: 22,  reason: 'Healthcare – Handel & Apotheken' },
-  SOLV:  { waci: 18,  reason: 'Medizinprodukte – diversifiziert' },
-  PFE:   { waci: 18,  reason: 'Pharma – Produktion' },
-  MRK:   { waci: 17,  reason: 'Pharma – Produktion' },
-  LLY:   { waci: 15,  reason: 'Pharma – Biologika' },
-  AMGN:  { waci: 16,  reason: 'Biotech – Produktion' },
-  UNH:   { waci: 12,  reason: 'Krankenversicherung – Verwaltung' },
-  AZN:   { waci: 17,  reason: 'Pharma – Produktion' },
-  NVO:   { waci: 15,  reason: 'Pharma – Biologika' },
-  SYK:   { waci: 14,  reason: 'MedTech – Implantate' },
-  BSX:   { waci: 16,  reason: 'MedTech – Katheter & Implantate' },
-  MDT:   { waci: 15,  reason: 'MedTech – diversifiziert' },
-  GILD:  { waci: 14,  reason: 'Biotech – Antivirale Mittel' },
-
-  // ── Financials – Banks ──
-  JPM:   { waci: 11,  reason: 'Bank – Finanzdienstleistung' },
-  BNS:   { waci: 12,  reason: 'Bank – Finanzdienstleistung' },
-  GS:    { waci: 10,  reason: 'Bank – Investment Banking' },
-  BAC:   { waci: 11,  reason: 'Bank – Finanzdienstleistung' },
-  WFC:   { waci: 12,  reason: 'Bank – Finanzdienstleistung' },
-  C:     { waci: 11,  reason: 'Bank – Finanzdienstleistung' },
-  MS:    { waci: 10,  reason: 'Bank – Investment Banking' },
-  TD:    { waci: 12,  reason: 'Bank – Finanzdienstleistung' },
-  RY:    { waci: 11,  reason: 'Bank – Finanzdienstleistung' },
-  CM:    { waci: 11,  reason: 'Bank – Finanzdienstleistung' },
-  USB:   { waci: 11,  reason: 'Bank – Finanzdienstleistung' },
-  TFC:   { waci: 11,  reason: 'Bank – Finanzdienstleistung' },
-
-  // ── Financials – Insurance / Asset Mgmt ──
-  ALV:   { waci: 8,   reason: 'Versicherung – sehr gering' },
-  MUV2:  { waci: 7,   reason: 'Rückversicherung – sehr gering' },
-  BLK:   { waci: 8,   reason: 'Asset Management – sehr gering' },
-  MA:    { waci: 9,   reason: 'Zahlungsdienstleistung' },
-  V:     { waci: 9,   reason: 'Zahlungsdienstleistung' },
-  AXP:   { waci: 10,  reason: 'Zahlungsdienstleistung' },
-  CB:    { waci: 8,   reason: 'Versicherung – Eigenheim & Auto' },
-  PRU:   { waci: 9,   reason: 'Lebensversicherung' },
-  MET:   { waci: 9,   reason: 'Lebensversicherung' },
-  SCHW:  { waci: 9,   reason: 'Brokerage – Finanzdienstleistung' },
-
-  // ── Financials – BDC ──
-  ARCC:  { waci: 10,  reason: 'BDC – Finanzdienstleistung' },
-  MAIN:  { waci: 10,  reason: 'BDC – Finanzdienstleistung' },
-  GLAD:  { waci: 10,  reason: 'BDC – Finanzdienstleistung' },
-  TSLX:  { waci: 10,  reason: 'BDC – Finanzdienstleistung' },
-  GBDC:  { waci: 10,  reason: 'BDC – Finanzdienstleistung' },
-  HTGC:  { waci: 10,  reason: 'BDC – Finanzdienstleistung' },
-  PSEC:  { waci: 10,  reason: 'BDC – Finanzdienstleistung' },
-  ORCC:  { waci: 10,  reason: 'BDC – Finanzdienstleistung' },
-
-  // ── Real Estate ──
-  IRM:   { waci: 25,  reason: 'REIT – Datenspeicherung & Aktenarchiv' },
-  O:     { waci: 25,  reason: 'REIT – Einzelhandels-Immobilien' },
-  OHI:   { waci: 18,  reason: 'REIT – Pflegeheime' },
-  EPR:   { waci: 25,  reason: 'REIT – Entertainment-Immobilien' },
-  VICI:  { waci: 20,  reason: 'REIT – Casino-Immobilien' },
-  AMT:   { waci: 15,  reason: 'REIT – Funktürme' },
-  STAG:  { waci: 35,  reason: 'REIT – Industrieimmobilien' },
-  CCI:   { waci: 15,  reason: 'REIT – Funktürme' },
-  DLR:   { waci: 30,  reason: 'REIT – Rechenzentren' },
-  NLOP:  { waci: 20,  reason: 'REIT – Büroimmobilien' },
-  SRC:   { waci: 22,  reason: 'REIT – Net Lease' },
-  WPC:   { waci: 22,  reason: 'REIT – Net Lease' },
-  OLP:   { waci: 22,  reason: 'REIT – Net Lease' },
-  ONL:   { waci: 22,  reason: 'REIT – Büroimmobilien' },
-  GOOD:  { waci: 20,  reason: 'REIT – Gewerbeimmobilien' },
-  PLD:   { waci: 22,  reason: 'REIT – Logistikimmobilien' },
-  EQIX:  { waci: 30,  reason: 'REIT – Rechenzentren' },
-  SPG:   { waci: 28,  reason: 'REIT – Einkaufszentren' },
-  AVB:   { waci: 20,  reason: 'REIT – Wohnimmobilien' },
-  EQR:   { waci: 20,  reason: 'REIT – Wohnimmobilien' },
-  PSA:   { waci: 15,  reason: 'REIT – Selfstorage' },
-  WELL:  { waci: 18,  reason: 'REIT – Seniorenresidenzen' },
-
-  // ── Utilities ──
-  NEE:   { waci: 45,  reason: 'Utility – Mix Wind/Solar + Gas' },
-  AWK:   { waci: 30,  reason: 'Wasser – Pumpen & Aufbereitung' },
-  CWEN:  { waci: 15,  reason: 'Renewables – Wind & Solar' },
-  D:     { waci: 200, reason: 'Utility – fossiler Strommix (Gas/Kohle)' },
-  SO:    { waci: 180, reason: 'Utility – fossiler Strommix' },
-  DUK:   { waci: 190, reason: 'Utility – fossiler Strommix' },
-  EXC:   { waci: 80,  reason: 'Utility – Nuclear + Gas' },
-  ED:    { waci: 100, reason: 'Utility – Erdgas New York' },
-  WEC:   { waci: 150, reason: 'Utility – Gas & Kohle' },
-  AEP:   { waci: 200, reason: 'Utility – Kohle & Gas' },
-  ES:    { waci: 100, reason: 'Utility – Gas & Erneuerbare' },
-  FE:    { waci: 180, reason: 'Utility – fossiler Strommix' },
-  PCG:   { waci: 70,  reason: 'Utility – California, Erneuerbare' },
-
-  // ── Information Technology ──
-  MSFT:  { waci: 8,   reason: 'Software – fast keine Emissionen' },
-  AAPL:  { waci: 10,  reason: 'Consumer Electronics – Lieferkette Scope 3' },
-  QCOM:  { waci: 25,  reason: 'Halbleiter – Design, kein Fab' },
-  TXN:   { waci: 30,  reason: 'Halbleiter – eigene Fertigung' },
-  IBM:   { waci: 30,  reason: 'IT-Dienstleistungen & Hardware' },
-  NVDA:  { waci: 20,  reason: 'Halbleiter – Design, kein Fab' },
-  INTC:  { waci: 35,  reason: 'Halbleiter – eigene Fertigung' },
-  AVGO:  { waci: 22,  reason: 'Halbleiter – Design' },
-  AMD:   { waci: 18,  reason: 'Halbleiter – fabless Design' },
-  ORCL:  { waci: 10,  reason: 'Software & Cloud-Datenbanken' },
-  SAP:   { waci: 8,   reason: 'Enterprise Software – ERP' },
-  ADBE:  { waci: 8,   reason: 'Software – Creative & SaaS' },
-  CRM:   { waci: 9,   reason: 'Software – CRM & Cloud' },
-  KD:    { waci: 25,  reason: 'IT-Dienstleistungen – Outsourcing' },
-  ACN:   { waci: 12,  reason: 'IT-Beratung & Outsourcing' },
-  CSCO:  { waci: 18,  reason: 'Netzwerk-Hardware & Software' },
-  TSM:   { waci: 50,  reason: 'Halbleiter – Auftragsfertiger' },
-  HPE:   { waci: 30,  reason: 'Server & Netzwerk-Hardware' },
-
-  // ── Consumer Discretionary ──
-  AMZN:  { waci: 40,  reason: 'E-Commerce & Cloud – Logistik intensiv' },
-  LOW:   { waci: 50,  reason: 'Retail – Baumärkte, Filialbetrieb' },
-  MCD:   { waci: 30,  reason: 'Gastronomie – Lieferkette Fleisch' },
-  SBUX:  { waci: 25,  reason: 'Gastronomie – Kaffeekette' },
-  TSLA:  { waci: 20,  reason: 'E-Mobilität – Produktion & Batterien' },
-  TJX:   { waci: 35,  reason: 'Retail – Discount-Handel' },
-  NKE:   { waci: 18,  reason: 'Sportartikel – Lieferkette Asien' },
-  HD:    { waci: 45,  reason: 'Retail – Baumärkte' },
-  CMG:   { waci: 25,  reason: 'Gastronomie – Fast Casual' },
-  BKNG:  { waci: 10,  reason: 'Online-Reiseportal – Bürobetrieb' },
-  MAR:   { waci: 25,  reason: 'Hotels – Gebäudebetrieb' },
-  HLT:   { waci: 22,  reason: 'Hotels – Gebäudebetrieb' },
-
-  // ── Communication Services ──
-  VZ:    { waci: 35,  reason: 'Telekom – Netzinfrastruktur USA' },
-  T:     { waci: 40,  reason: 'Telekom – Netzinfrastruktur USA' },
-  WBD:   { waci: 20,  reason: 'Medien – Streaming & TV' },
-  DIS:   { waci: 20,  reason: 'Medien – Parks & Entertainment' },
-  NFLX:  { waci: 12,  reason: 'Streaming – Cloud-Rechenzentren' },
-  GOOGL: { waci: 12,  reason: 'Tech/Werbung – Carbon Neutral seit 2007' },
-  GOOG:  { waci: 12,  reason: 'Tech/Werbung – Carbon Neutral seit 2007' },
-  META:  { waci: 10,  reason: 'Social Media – RE100-Mitglied' },
-  CMCSA: { waci: 25,  reason: 'Telekom/Medien – Kabel & Broadcast' },
-  TMUS:  { waci: 30,  reason: 'Telekom – Mobilfunk USA' },
-
-  // ── Crypto ──
-  BTC:   { waci: 900, reason: 'Crypto – PoW Mining, extrem energieintensiv' },
-  ETH:   { waci: 55,  reason: 'Crypto – PoS seit Sep 2022, ~99% effizienter' },
-  SOL:   { waci: 50,  reason: 'Crypto – PoS, effizient' },
-  XRP:   { waci: 20,  reason: 'Crypto – PoS-ähnliches Konsensprotokoll' },
-  BNB:   { waci: 60,  reason: 'Crypto – PoS, Binance Chain' },
-  ADA:   { waci: 40,  reason: 'Crypto – PoS, Cardano' },
-  MATIC: { waci: 30,  reason: 'Crypto – PoS Layer 2' },
-  DOT:   { waci: 40,  reason: 'Crypto – PoS, Polkadot' },
-
-  // ── ETFs ──
-  ISPA:  { waci: 55,  reason: 'ETF – iShares STOXX Global Select Div' },
-  JEPI:  { waci: 60,  reason: 'ETF – JPM US Equity Premium Income' },
-  JEPQ:  { waci: 40,  reason: 'ETF – JPM Nasdaq Income (Tech-übergewichtet)' },
-  JEPE:  { waci: 50,  reason: 'ETF – JPM Europe Equity Income' },
-  JEPG:  { waci: 55,  reason: 'ETF – JPM Global Equity Income' },
-  WINC:  { waci: 50,  reason: 'ETF – iShares World Equity High Income' },
-  LDGL:  { waci: 45,  reason: 'ETF – L&G Global Quality Dividends' },
-  IUS7:  { waci: 55,  reason: 'ETF – iShares JP Morgan EM Bond' },
-  TDIV:  { waci: 55,  reason: 'ETF – VanEck Developed Markets Div' },
-  LGGE:  { waci: 55,  reason: 'ETF – L&G Europe ex-UK Quality Div' },
-  LDME:  { waci: 55,  reason: 'ETF – L&G Emerging Markets Div' },
-  GLDI:  { waci: 55,  reason: 'ETP – IncomeShares Gold + Yield' },
-  F50A:  { waci: 60,  reason: 'ETF – Amundi Prime Global' },
-  IQQY:  { waci: 50,  reason: 'ETF – iShares Core MSCI Europe Dist' },
-  SXR8:  { waci: 55,  reason: 'ETF – iShares Core S&P 500' },
-  IQQ6:  { waci: 45,  reason: 'ETF – iShares Developed Markets Property' },
-  EUNY:  { waci: 55,  reason: 'ETF – iShares EM Dividend' },
-  IQQA:  { waci: 50,  reason: 'ETF – iShares Euro Dividend' },
-  IQQH:  { waci: 20,  reason: 'ETF – iShares Global Clean Energy Transition' },
-  IQQQ:  { waci: 30,  reason: 'ETF – iShares Global Water' },
-  IQQW:  { waci: 55,  reason: 'ETF – iShares MSCI World Dist' },
-  VGWD:  { waci: 55,  reason: 'ETF – Vanguard FTSE All-World High Div' },
-  VGWL:  { waci: 55,  reason: 'ETF – Vanguard FTSE All-World' },
-  VGEU:  { waci: 50,  reason: 'ETF – Vanguard FTSE Developed Europe' },
-  VFEM:  { waci: 60,  reason: 'ETF – Vanguard FTSE Emerging Markets' },
-  LYWLD: { waci: 55,  reason: 'ETF – Amundi MSCI World Swap' },
-  LYSX:  { waci: 50,  reason: 'ETF – Amundi Euro Stoxx 50' },
-  LEMC:  { waci: 65,  reason: 'ETF – Amundi MSCI Emerging Markets' },
-  MEUG:  { waci: 50,  reason: 'ETF – Amundi MSCI Europe' },
-  AHYQ:  { waci: 55,  reason: 'ETF – Amundi MSCI World III Dist' },
-  CSH2:  { waci: 5,   reason: 'ETF – Geldmarkt / Overnight Cash' },
-  MEUD:  { waci: 50,  reason: 'ETF – Amundi Stoxx Europe 600' },
-  ERNX:  { waci: 5,   reason: 'ETF – iShares Ultrashort Bond' },
-  ZPRG:  { waci: 55,  reason: 'ETF – SPDR S&P Global Div Aristocrats' },
-  XDDX:  { waci: 50,  reason: 'ETF – Xtrackers DAX ESG Screened' },
-  HJUA:  { waci: 45,  reason: 'Fonds – DWS Top Dividende LD' },
+  // Energy
+  CVX:{waci:850,reason:'Fossil – Ölproduktion & Raffinerien'},XOM:{waci:820,reason:'Fossil – Ölproduktion & Raffinerien'},
+  ENB:{waci:620,reason:'Fossil – Pipelinetransport'},SHEL:{waci:600,reason:'Fossil – Integrierter Konzern'},
+  RDSA:{waci:600,reason:'Fossil – Integrierter Konzern'},BP:{waci:570,reason:'Fossil – Integrierter Konzern'},
+  TTE:{waci:540,reason:'Fossil – Integrierter Konzern'},COP:{waci:700,reason:'Fossil – E&P'},
+  OXY:{waci:750,reason:'Fossil – Ölproduktion'},PSX:{waci:600,reason:'Fossil – Raffinerien'},
+  MPC:{waci:580,reason:'Fossil – Raffinerien'},VLO:{waci:560,reason:'Fossil – Raffinerien'},
+  SLB:{waci:400,reason:'Ölfeldausrüstung'},
+  // Tobacco
+  MO:{waci:120,reason:'Tabak – Produktion & Logistik'},BATS:{waci:130,reason:'Tabak – Produktion & Logistik'},
+  BTI:{waci:130,reason:'Tabak – Produktion & Logistik'},IMB:{waci:130,reason:'Tabak – Produktion & Logistik'},
+  PM:{waci:115,reason:'Tabak – Produktion & Logistik'},
+  // Materials
+  BAS:{waci:350,reason:'Chemie – Grundstoffe, energieintensiv'},LIN:{waci:220,reason:'Industriegase – energieintensiv'},
+  APD:{waci:200,reason:'Industriegase – energieintensiv'},NUE:{waci:400,reason:'Stahl – EAF'},
+  // Industrials
+  DHL:{waci:180,reason:'Logistik – Flotte & Luftfracht'},FAST:{waci:80,reason:'Industrie – Vertrieb & Logistik'},
+  CAT:{waci:150,reason:'Maschinenbau – Produktion'},MMM:{waci:120,reason:'Industrie – diversifiziert'},
+  HON:{waci:90,reason:'Industrie – Automatisierung'},UPS:{waci:160,reason:'Logistik – Kurierdienste'},
+  FDX:{waci:170,reason:'Logistik – Luftfracht'},
+  // Consumer Staples
+  KO:{waci:45,reason:'FMCG – Produktion & Verpackung'},PEP:{waci:40,reason:'FMCG – Produktion & Verpackung'},
+  PG:{waci:30,reason:'FMCG – Haushalt & Körperpflege'},GIS:{waci:45,reason:'FMCG – Lebensmittelproduktion'},
+  HRL:{waci:50,reason:'Lebensmittel – Fleischverarbeitung'},KHC:{waci:45,reason:'FMCG – Lebensmittel'},
+  ULVR:{waci:35,reason:'FMCG – Konsumgüter'},MDLZ:{waci:40,reason:'FMCG – Snacks & Süßwaren'},
+  CL:{waci:30,reason:'FMCG – Körperpflege'},MICC:{waci:30,reason:'FMCG – Eisproduktion'},
+  // Healthcare
+  JNJ:{waci:20,reason:'Pharma – Produktion & Logistik'},ABT:{waci:18,reason:'MedTech – Produktion'},
+  ABBV:{waci:15,reason:'Pharma – Biologika-Produktion'},BMY:{waci:20,reason:'Pharma – Produktion'},
+  CVS:{waci:22,reason:'Healthcare – Handel & Apotheken'},SOLV:{waci:18,reason:'Medizinprodukte – diversifiziert'},
+  PFE:{waci:18,reason:'Pharma – Produktion'},MRK:{waci:17,reason:'Pharma – Produktion'},
+  LLY:{waci:15,reason:'Pharma – Biologika'},AMGN:{waci:16,reason:'Biotech – Produktion'},
+  UNH:{waci:12,reason:'Krankenversicherung – Verwaltung'},AZN:{waci:17,reason:'Pharma – Produktion'},
+  NVO:{waci:15,reason:'Pharma – Biologika'},
+  // Financials – Banks
+  JPM:{waci:11,reason:'Bank – Finanzdienstleistung'},BNS:{waci:12,reason:'Bank – Finanzdienstleistung'},
+  GS:{waci:10,reason:'Bank – Investment Banking'},BAC:{waci:11,reason:'Bank – Finanzdienstleistung'},
+  WFC:{waci:12,reason:'Bank – Finanzdienstleistung'},C:{waci:11,reason:'Bank – Finanzdienstleistung'},
+  MS:{waci:10,reason:'Bank – Investment Banking'},TD:{waci:12,reason:'Bank – Finanzdienstleistung'},
+  // Financials – Insurance & AM
+  ALV:{waci:8,reason:'Versicherung – sehr gering'},MUV2:{waci:7,reason:'Rückversicherung – sehr gering'},
+  BLK:{waci:8,reason:'Asset Management – sehr gering'},MA:{waci:9,reason:'Zahlungsdienstleistung'},
+  V:{waci:9,reason:'Zahlungsdienstleistung'},AXP:{waci:10,reason:'Zahlungsdienstleistung'},
+  // Financials – BDC
+  ARCC:{waci:10,reason:'BDC – Finanzdienstleistung'},MAIN:{waci:10,reason:'BDC – Finanzdienstleistung'},
+  GLAD:{waci:10,reason:'BDC – Finanzdienstleistung'},TSLX:{waci:10,reason:'BDC – Finanzdienstleistung'},
+  HTGC:{waci:10,reason:'BDC – Finanzdienstleistung'},
+  // Real Estate
+  IRM:{waci:25,reason:'REIT – Datenspeicherung & Aktenarchiv'},O:{waci:25,reason:'REIT – Einzelhandels-Immobilien'},
+  OHI:{waci:18,reason:'REIT – Pflegeheime'},EPR:{waci:25,reason:'REIT – Entertainment-Immobilien'},
+  VICI:{waci:20,reason:'REIT – Casino & Entertainment'},AMT:{waci:15,reason:'REIT – Funktürme'},
+  STAG:{waci:35,reason:'REIT – Industrieimmobilien'},CCI:{waci:15,reason:'REIT – Funktürme'},
+  DLR:{waci:30,reason:'REIT – Rechenzentren'},NLOP:{waci:20,reason:'REIT – Büroimmobilien'},
+  SRC:{waci:22,reason:'REIT – Net Lease'},WPC:{waci:22,reason:'REIT – Net Lease'},
+  OLP:{waci:22,reason:'REIT – Net Lease'},ONL:{waci:22,reason:'REIT – Büroimmobilien'},
+  GOOD:{waci:20,reason:'REIT – Gewerbeimmobilien'},PLD:{waci:22,reason:'REIT – Logistikimmobilien'},
+  EQIX:{waci:30,reason:'REIT – Rechenzentren'},PSA:{waci:15,reason:'REIT – Selfstorage'},
+  // Utilities
+  NEE:{waci:45,reason:'Utility – Mix Wind/Solar + Gas'},AWK:{waci:30,reason:'Wasser – Pumpen & Aufbereitung'},
+  CWEN:{waci:15,reason:'Renewables – Wind & Solar'},D:{waci:200,reason:'Utility – fossiler Strommix (Gas/Kohle)'},
+  SO:{waci:180,reason:'Utility – fossiler Strommix'},DUK:{waci:190,reason:'Utility – fossiler Strommix'},
+  EXC:{waci:80,reason:'Utility – Nuclear + Gas'},ED:{waci:100,reason:'Utility – Erdgas'},
+  AEP:{waci:200,reason:'Utility – Kohle & Gas'},PCG:{waci:70,reason:'Utility – California Erneuerbare'},
+  // Technology
+  MSFT:{waci:8,reason:'Software – fast keine Emissionen'},AAPL:{waci:10,reason:'Consumer Electronics – Lieferkette Scope 3'},
+  QCOM:{waci:25,reason:'Halbleiter – Design, fabless'},TXN:{waci:30,reason:'Halbleiter – eigene Fertigung'},
+  IBM:{waci:30,reason:'IT-Dienstleistungen & Hardware'},NVDA:{waci:20,reason:'Halbleiter – Design, fabless'},
+  INTC:{waci:35,reason:'Halbleiter – eigene Fertigung'},AVGO:{waci:22,reason:'Halbleiter – Design'},
+  AMD:{waci:18,reason:'Halbleiter – fabless Design'},SAP:{waci:8,reason:'Enterprise Software – ERP'},
+  ADBE:{waci:8,reason:'Software – Creative & SaaS'},CRM:{waci:9,reason:'Software – CRM & Cloud'},
+  KD:{waci:25,reason:'IT-Dienstleistungen – Outsourcing'},ORCL:{waci:10,reason:'Software & Cloud-Datenbanken'},
+  // Consumer Discretionary
+  AMZN:{waci:40,reason:'E-Commerce & Cloud – Logistik intensiv'},LOW:{waci:50,reason:'Retail – Baumärkte'},
+  MCD:{waci:30,reason:'Gastronomie – Lieferkette Fleisch'},SBUX:{waci:25,reason:'Gastronomie – Kaffeekette'},
+  TSLA:{waci:20,reason:'E-Mobilität – Produktion & Batterien'},NKE:{waci:18,reason:'Sportartikel – Lieferkette'},
+  HD:{waci:45,reason:'Retail – Baumärkte'},
+  // Communication
+  VZ:{waci:35,reason:'Telekom – Netzinfrastruktur USA'},T:{waci:40,reason:'Telekom – Netzinfrastruktur USA'},
+  WBD:{waci:20,reason:'Medien – Streaming & TV'},DIS:{waci:20,reason:'Medien – Parks & Entertainment'},
+  NFLX:{waci:12,reason:'Streaming – Cloud-Rechenzentren'},GOOGL:{waci:12,reason:'Tech/Werbung – RE100-Mitglied'},
+  META:{waci:10,reason:'Social Media – RE100-Mitglied'},CMCSA:{waci:25,reason:'Telekom/Medien – Kabel & Broadcast'},
+  // Crypto
+  BTC:{waci:900,reason:'Crypto – PoW Mining, extrem energieintensiv'},
+  ETH:{waci:55,reason:'Crypto – PoS seit Sep 2022, ~99% effizienter'},
+  SOL:{waci:50,reason:'Crypto – PoS, effizient'},XRP:{waci:20,reason:'Crypto – PoS-ähnliches Konsensprotokoll'},
+  BNB:{waci:60,reason:'Crypto – PoS, Binance Chain'},
+  // ETFs
+  ISPA:{waci:55,reason:'ETF – iShares STOXX Global Select Div'},JEPI:{waci:60,reason:'ETF – JPM US Equity Premium Income'},
+  JEPQ:{waci:40,reason:'ETF – JPM Nasdaq Income (Tech-übergewichtet)'},JEPE:{waci:50,reason:'ETF – JPM Europe Equity Income'},
+  JEPG:{waci:55,reason:'ETF – JPM Global Equity Income'},WINC:{waci:50,reason:'ETF – iShares World High Income'},
+  LDGL:{waci:45,reason:'ETF – L&G Global Quality Dividends'},IUS7:{waci:55,reason:'ETF – iShares JP Morgan EM Bond'},
+  TDIV:{waci:55,reason:'ETF – VanEck Developed Markets Div'},LGGE:{waci:55,reason:'ETF – L&G Europe ex-UK Quality Div'},
+  LDME:{waci:55,reason:'ETF – L&G Emerging Markets Div'},GLDI:{waci:55,reason:'ETP – IncomeShares Gold + Yield'},
+  F50A:{waci:60,reason:'ETF – Amundi Prime Global'},IQQY:{waci:50,reason:'ETF – iShares Core MSCI Europe'},
+  SXR8:{waci:55,reason:'ETF – iShares Core S&P 500'},IQQ6:{waci:45,reason:'ETF – iShares Developed Markets Property'},
+  EUNY:{waci:55,reason:'ETF – iShares EM Dividend'},IQQA:{waci:50,reason:'ETF – iShares Euro Dividend'},
+  IQQH:{waci:20,reason:'ETF – iShares Global Clean Energy Transition'},IQQQ:{waci:30,reason:'ETF – iShares Global Water'},
+  IQQW:{waci:55,reason:'ETF – iShares MSCI World Dist'},VGWD:{waci:55,reason:'ETF – Vanguard FTSE All-World High Div'},
+  VGWL:{waci:55,reason:'ETF – Vanguard FTSE All-World'},VGEU:{waci:50,reason:'ETF – Vanguard FTSE Developed Europe'},
+  VFEM:{waci:60,reason:'ETF – Vanguard FTSE Emerging Markets'},LYWLD:{waci:55,reason:'ETF – Amundi MSCI World Swap'},
+  LYSX:{waci:50,reason:'ETF – Amundi Euro Stoxx 50'},LEMC:{waci:65,reason:'ETF – Amundi MSCI Emerging Markets'},
+  MEUG:{waci:50,reason:'ETF – Amundi MSCI Europe'},AHYQ:{waci:55,reason:'ETF – Amundi MSCI World III Dist'},
+  CSH2:{waci:5,reason:'ETF – Geldmarkt / Overnight Cash'},MEUD:{waci:50,reason:'ETF – Amundi Stoxx Europe 600'},
+  ERNX:{waci:5,reason:'ETF – iShares Ultrashort Bond'},ZPRG:{waci:55,reason:'ETF – SPDR S&P Global Div Aristocrats'},
+  XDDX:{waci:50,reason:'ETF – Xtrackers DAX ESG Screened'},HJUA:{waci:45,reason:'Fonds – DWS Top Dividende LD'},
 };
 
-// Sector fallbacks
 const SECTOR_WACI = {
-  Energy:                   600,
-  Materials:                280,
-  Industrials:              120,
-  'Consumer Discretionary': 45,
-  'Consumer Staples':       50,
-  'Health Care':            20,
-  Financials:               12,
-  'Information Technology': 18,
-  'Communication Services': 30,
-  Utilities:                150,
-  'Real Estate':            25,
-  mixed:                    55,
-  '':                       55,
+  Energy:650,Materials:280,Industrials:120,'Consumer Discretionary':45,
+  'Consumer Staples':50,'Health Care':20,Financials:12,'Information Technology':18,
+  'Communication Services':30,Utilities:150,'Real Estate':25,mixed:55,'':55,
 };
-
+const SECTOR_COLORS = {
+  Energy:'#f87171',Materials:'#fb923c',Industrials:'#fbbf24',
+  'Consumer Staples':'#a3e635','Consumer Discretionary':'#4ade80',
+  'Health Care':'#34d399',Financials:'#22d3ee','Information Technology':'#60a5fa',
+  'Communication Services':'#818cf8',Utilities:'#f472b6','Real Estate':'#e879f9',
+  CRYPTO:'#fbbf24',ETF:'#94a3b8',FUND:'#7dd3fc',mixed:'#64748b',Sonstige:'#475569',
+};
 const BENCHMARK_WACI = 180;
+const BENCHMARKS = [
+  {name:'Paris 1.5°C Ziel',    v:50,  note:'Klima-Ziel 2050',    color:'#34d399'},
+  {name:'Best-in-Class Depot', v:35,  note:'Top 10% Portfolios',  color:'#34d399'},
+  {name:'S&P 500',             v:145, note:'US Large Caps',        color:'#94a3b8'},
+  {name:'MSCI World',          v:180, note:'Globaler Standard',    color:'#94a3b8'},
+  {name:'DAX (Schätzung)',     v:165, note:'Dt. Leitindex',        color:'#94a3b8'},
+  {name:'MSCI Emerging Mkt',   v:225, note:'Schwellenmärkte',      color:'#fbbf24'},
+];
 
-// ============================================================
-// UTILS
-// ============================================================
-const parseNum = s => (!s || s === '') ? 0 : parseFloat(String(s).replace(',', '.')) || 0;
+// ── Utils ────────────────────────────────────────────────────
+const pn = s => (!s||s==='')?0:parseFloat(String(s).replace(',','.'))||0;
+const fmt = (n,d=1) => n.toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtK = n => n>=1000?`${fmt(n/1000,0)}k`:fmt(n,0);
+const fmtEur = n => n.toLocaleString('de-DE',{minimumFractionDigits:0,maximumFractionDigits:0});
 
-const fmt = (n, d = 1) => n.toLocaleString('de-DE', { minimumFractionDigits: d, maximumFractionDigits: d });
-const fmtEur = n => n.toLocaleString('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-
-function getWaciColor(w) {
-  if (w > 300) return '#f87171';
-  if (w > 80)  return '#fbbf24';
-  if (w > 20)  return '#60a5fa';
-  return '#34d399';
+function waciColor(w) {
+  return w>300?'#f87171':w>80?'#fbbf24':w>20?'#60a5fa':'#34d399';
+}
+function waciClass(w) {
+  return w>300?'red':w>80?'yellow':w>20?'blue':'green';
+}
+function bColor(b) {
+  return b>5?'#f87171':b>2?'#fbbf24':b>0.5?'#60a5fa':'#34d399';
+}
+function barGradient(w) {
+  if(w>300) return 'linear-gradient(90deg,#f87171,#dc2626)';
+  if(w>80)  return 'linear-gradient(90deg,#fbbf24,#d97706)';
+  if(w>20)  return 'linear-gradient(90deg,#60a5fa,#2563eb)';
+  return 'linear-gradient(90deg,#34d399,#059669)';
+}
+function getFallback(sector,secType) {
+  if(secType==='ETF')   return {waci:55,reason:'ETF – Sektordurchschnitt (geschätzt)'};
+  if(secType==='FUND')  return {waci:45,reason:'Fonds – Sektordurchschnitt (geschätzt)'};
+  if(secType==='CRYPTO')return {waci:300,reason:'Crypto – Schätzwert (unbekannt)'};
+  const w=SECTOR_WACI[sector]||55;
+  return {waci:w,reason:`${sector||'Sektor unbekannt'} – Ø-Schätzwert`};
+}
+function sectorColor(name) {
+  return SECTOR_COLORS[name]||SECTOR_COLORS.Sonstige;
 }
 
-function getBeitragColor(b) {
-  if (b > 5)   return '#f87171';
-  if (b > 2)   return '#fbbf24';
-  if (b > 0.5) return '#60a5fa';
-  return '#34d399';
-}
-
-function waciColorClass(w) {
-  if (w > 300) return 'red';
-  if (w > 80)  return 'yellow';
-  if (w > 20)  return 'blue';
-  return 'green';
-}
-
-function getFallback(sector, secType) {
-  if (secType === 'ETF')    return { waci: 55, reason: 'ETF – Sektordurchschnitt (geschätzt)' };
-  if (secType === 'FUND')   return { waci: 45, reason: 'Fonds – Sektordurchschnitt (geschätzt)' };
-  if (secType === 'CRYPTO') return { waci: 300, reason: 'Crypto – Schätzwert (unbekannt)' };
-  const w = SECTOR_WACI[sector] || 55;
-  return { waci: w, reason: `${sector || 'Sektor unbekannt'} – Ø-Schätzwert` };
-}
-
-// ============================================================
-// CSV PARSER
-// ============================================================
+// ── CSV Parser ────────────────────────────────────────────────
 function parseCSV(text) {
   const lines = text.trim().split(/\r?\n/);
-  if (lines.length < 2) throw new Error('CSV zu kurz – mindestens 2 Zeilen erwartet.');
-  const headers = lines[0].split(';').map(h => h.trim().replace(/"/g, ''));
-  return lines.slice(1)
-    .filter(l => l.trim())
-    .map(line => {
-      const cols = line.split(';');
-      const obj = {};
-      headers.forEach((h, i) => {
-        obj[h] = cols[i] ? cols[i].trim().replace(/"/g, '') : '';
-      });
-      return obj;
-    })
-    .filter(r => r.symbol);
+  if(lines.length<2) throw new Error('CSV zu kurz – min. 2 Zeilen erwartet.');
+  const headers = lines[0].split(';').map(h=>h.trim().replace(/"/g,''));
+  return lines.slice(1).filter(l=>l.trim()).map(line=>{
+    const cols=line.split(';');
+    const obj={};
+    headers.forEach((h,i)=>{obj[h]=cols[i]?cols[i].trim().replace(/"/g,''):'';});
+    return obj;
+  }).filter(r=>r.symbol);
 }
 
-// ============================================================
-// ANALYSIS
-// ============================================================
+// ── Analysis ──────────────────────────────────────────────────
 function analyzePortfolio(rows) {
-  const active = rows.filter(r => parseNum(r.value) > 0);
-  if (active.length === 0) throw new Error('Keine aktiven Positionen gefunden (value > 0 erwartet).');
-
-  const totalValue = active.reduce((s, r) => s + parseNum(r.value), 0);
+  const active = rows.filter(r=>pn(r.value)>0);
+  if(!active.length) throw new Error('Keine aktiven Positionen (value > 0) gefunden.');
+  const totalValue = active.reduce((s,r)=>s+pn(r.value),0);
   const estimated = [];
 
-  const positions = active.map(r => {
-    const sym   = r.symbol;
-    const val   = parseNum(r.value);
-    const w     = val / totalValue;
-    let data    = WACI_DB[sym];
-    let isEst   = false;
-
-    if (!data) {
-      data  = getFallback(r.sector, r.securityType);
-      isEst = true;
-      estimated.push(sym);
-    }
-
-    return {
-      sym, name: r.name, val, weight: w,
-      waci: data.waci, contribution: w * data.waci,
-      reason: data.reason,
-      sector: r.sector || r.securityType || '–',
-      secType: r.securityType || '',
-      isEstimated: isEst,
-    };
+  const positions = active.map(r=>{
+    const sym=r.symbol, val=pn(r.value), w=val/totalValue;
+    let data=WACI_DB[sym], isEst=false;
+    if(!data){data=getFallback(r.sector,r.securityType);isEst=true;estimated.push(sym);}
+    return {sym,name:r.name,val,weight:w,waci:data.waci,
+            contribution:w*data.waci,reason:data.reason,
+            sector:r.sector||r.securityType||'–',secType:r.securityType||'',isEstimated:isEst};
   });
+  positions.sort((a,b)=>b.contribution-a.contribution);
 
-  positions.sort((a, b) => b.contribution - a.contribution);
-
-  const portfolioWACI = positions.reduce((s, p) => s + p.contribution, 0);
-  const reduction     = (BENCHMARK_WACI - portfolioWACI) / BENCHMARK_WACI;
+  const portfolioWACI = positions.reduce((s,p)=>s+p.contribution,0);
+  const reduction = (BENCHMARK_WACI-portfolioWACI)/BENCHMARK_WACI;
 
   // Sector breakdown
-  const sectorMap = {};
-  positions.forEach(p => {
-    const s = p.sector || 'Sonstige';
-    if (!sectorMap[s]) sectorMap[s] = { contribution: 0, weight: 0, count: 0 };
-    sectorMap[s].contribution += p.contribution;
-    sectorMap[s].weight       += p.weight;
-    sectorMap[s].count++;
+  const sm={};
+  positions.forEach(p=>{
+    const s=p.sector||'Sonstige';
+    if(!sm[s]) sm[s]={contribution:0,weight:0,count:0};
+    sm[s].contribution+=p.contribution; sm[s].weight+=p.weight; sm[s].count++;
   });
-  const sectorList = Object.entries(sectorMap)
-    .map(([name, d]) => ({ name, ...d, avgWaci: d.weight ? d.contribution / d.weight : 0 }))
-    .sort((a, b) => b.contribution - a.contribution);
+  const sectorList = Object.entries(sm)
+    .map(([name,d])=>({name,...d,avgWaci:d.weight?d.contribution/d.weight:0}))
+    .sort((a,b)=>b.contribution-a.contribution);
 
-  const topDrivers = positions.filter(p => p.contribution / portfolioWACI > 0.04);
+  // Top 3 emitters
+  const top3 = positions.slice(0,3);
+  // Bottom 5 cleanest (lowest WACI among positions with weight > 0.4%)
+  const cleanest = positions.filter(p=>p.weight>0.004).sort((a,b)=>a.waci-b.waci).slice(0,5);
+  // Top contributors (>4% of WACI)
+  const topDrivers = positions.filter(p=>p.contribution/portfolioWACI>0.04);
+
+  // What-if: remove top emitters progressively
+  const whatIf = [];
+  let wouldBeWACI = portfolioWACI;
+  for(let i=0;i<Math.min(3,positions.length);i++){
+    const p=positions[i];
+    wouldBeWACI -= p.contribution;
+    whatIf.push({sym:p.sym,action:`${p.sym} liquidieren`,newWACI:wouldBeWACI,saving:portfolioWACI-wouldBeWACI});
+  }
+
+  // CO₂ footprint (financed emissions)
+  const footprintT = portfolioWACI * (totalValue*1.08/1e6);
 
   return {
-    positions, portfolioWACI, totalValue,
-    numPositions: positions.length,
-    reduction, sectorList, estimated,
-    topDrivers,
-    date: new Date().toISOString().split('T')[0],
+    positions,portfolioWACI,totalValue,numPositions:positions.length,
+    reduction,sectorList,estimated,top3,cleanest,topDrivers,whatIf,
+    footprintT,date:new Date().toISOString().split('T')[0],
   };
 }
 
-// ============================================================
-// HISTORY
-// ============================================================
-function loadHistory() {
-  try { return JSON.parse(localStorage.getItem('co2_history') || '[]'); }
-  catch { return []; }
+// ── History ───────────────────────────────────────────────────
+const loadHistory  = ()=>{try{return JSON.parse(localStorage.getItem('co2_history')||'[]');}catch{return[];}};
+const loadLastAna  = ()=>{try{return JSON.parse(localStorage.getItem('co2_last')||'null');}catch{return null;}};
+function pushHistory(a){
+  const h=loadHistory().filter(x=>x.date!==a.date);
+  h.push({date:a.date,waci:+a.portfolioWACI.toFixed(2),val:Math.round(a.totalValue)});
+  if(h.length>30)h.shift();
+  localStorage.setItem('co2_history',JSON.stringify(h));
 }
+function saveLastAna(a){localStorage.setItem('co2_last',JSON.stringify(a));}
 
-function pushHistory(a) {
-  const h = loadHistory().filter(x => x.date !== a.date);
-  h.push({ date: a.date, waci: +a.portfolioWACI.toFixed(2), val: Math.round(a.totalValue) });
-  if (h.length > 30) h.shift();
-  localStorage.setItem('co2_history', JSON.stringify(h));
-}
+// ── SVG Gauge ─────────────────────────────────────────────────
+function renderGauge(waci) {
+  const MAX=280, cx=95, cy=88, R=68, SW=14;
+  const t=Math.min(waci/MAX,1);
+  const pt=(t)=>{const a=Math.PI*(1-t);return[cx+R*Math.cos(a),cy-R*Math.sin(a)];};
+  const arc=(t1,t2)=>{
+    const[x1,y1]=pt(t1),[x2,y2]=pt(t2);
+    return `M${x1.toFixed(1)} ${y1.toFixed(1)} A${R} ${R} 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}`;
+  };
+  const zones=[
+    {t1:0,      t2:50/MAX,  color:'#34d399'},
+    {t1:50/MAX, t2:100/MAX, color:'#60a5fa'},
+    {t1:100/MAX,t2:200/MAX, color:'#fbbf24'},
+    {t1:200/MAX,t2:1,       color:'#f87171'},
+  ];
+  const vColor=waciColor(waci);
+  const[nx,ny]=pt(t);
+  const[ex,ey]=pt(Math.min(t,0.999));
+  const[sx,sy]=pt(0);
+  const[rrx,rry]=pt(0.9999);
+  // Rating
+  const rating = waci<=50?'Exzellent':waci<=100?'Sehr Gut':waci<=150?'Gut':waci<=200?'Mittel':'Kritisch';
 
-function loadLastAnalysis() {
-  try { return JSON.parse(localStorage.getItem('co2_last') || 'null'); }
-  catch { return null; }
-}
-
-function saveLastAnalysis(a) {
-  localStorage.setItem('co2_last', JSON.stringify(a));
-}
-
-// ============================================================
-// RENDERING
-// ============================================================
-function renderKPIs(a) {
-  const wc = a.portfolioWACI < 80 ? 'green' : a.portfolioWACI < 150 ? 'yellow' : 'red';
-  const rc = a.reduction > 0.3 ? 'green' : a.reduction > 0 ? 'yellow' : 'red';
-  const sign = a.reduction >= 0 ? '−' : '+';
   return `
-    <div class="kpi">
-      <div class="kpi-label">Dein Portfolio</div>
-      <div class="kpi-value ${wc}">${fmt(a.portfolioWACI)}</div>
-      <div class="kpi-sub">tCO₂ pro $M Umsatz</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">MSCI World</div>
-      <div class="kpi-value neutral">180,0</div>
-      <div class="kpi-sub">tCO₂ pro $M Umsatz</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Deine Reduktion</div>
-      <div class="kpi-value ${rc}">${sign}${Math.abs(Math.round(a.reduction * 100))}%</div>
-      <div class="kpi-sub">vs. Benchmark</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Portfoliowert</div>
-      <div class="kpi-value neutral">${fmtEur(a.totalValue)}</div>
-      <div class="kpi-sub">EUR gesamt</div>
-    </div>
-    <div class="kpi">
-      <div class="kpi-label">Positionen</div>
-      <div class="kpi-value neutral">${a.numPositions}</div>
-      <div class="kpi-sub">aktive Positionen</div>
-    </div>
-  `;
+    <div class="gauge-eyebrow">CO₂-Score</div>
+    <svg viewBox="0 0 190 105" style="width:180px;overflow:visible">
+      <!-- Zone backgrounds (dim) -->
+      ${zones.map(z=>`<path d="${arc(z.t1,z.t2)}" fill="none" stroke="${z.color}" stroke-width="${SW}" opacity="0.1"/>`).join('')}
+      <!-- Grey track -->
+      <path d="${arc(0,0.9999)}" fill="none" stroke="#1a1e2a" stroke-width="${SW}" stroke-linecap="round"/>
+      <!-- Filled zones up to t -->
+      ${zones.map(z=>{
+        if(t<=z.t1)return'';
+        const to=Math.min(t,z.t2);
+        return`<path d="${arc(z.t1,to)}" fill="none" stroke="${z.color}" stroke-width="${SW}" stroke-linecap="round"/>`;
+      }).join('')}
+      <!-- End marker -->
+      ${t>0.02?`<circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="5" fill="${vColor}" stroke="#080b11" stroke-width="2.5"/>`:``}
+      <!-- Labels -->
+      <text x="${(sx-12).toFixed(1)}" y="${(sy+4).toFixed(1)}" text-anchor="end" fill="#2a3450" font-size="9" font-family="system-ui">0</text>
+      <text x="${(rrx+10).toFixed(1)}" y="${(rry+4).toFixed(1)}" text-anchor="start" fill="#2a3450" font-size="9" font-family="system-ui">${MAX}+</text>
+      <!-- Value -->
+      <text x="${cx}" y="${cy+12}" text-anchor="middle" fill="${vColor}" font-size="30" font-weight="700" letter-spacing="-1.5" font-family="system-ui">${Math.round(waci)}</text>
+      <text x="${cx}" y="${cy+25}" text-anchor="middle" fill="#4a5272" font-size="9" font-family="system-ui">tCO₂ / $M Umsatz</text>
+      <text x="${cx}" y="${cy+39}" text-anchor="middle" fill="${vColor}" font-size="10" font-weight="600" font-family="system-ui" opacity="0.8">${rating}</text>
+    </svg>`;
 }
 
-function renderSparkline(history) {
-  if (history.length < 2) return '';
-  const vals = history.map(h => h.waci);
-  const W = 260, H = 40;
-  const minV = Math.min(...vals) * 0.92;
-  const maxV = Math.max(...vals) * 1.08;
-  const range = maxV - minV || 1;
-  const toY = v => H - ((v - minV) / range) * (H - 8) - 4;
-  const pts = vals.map((v, i) =>
-    `${((i / (vals.length - 1)) * W).toFixed(1)},${toY(v).toFixed(1)}`
-  ).join(' ');
-  const last = vals[vals.length - 1];
-  const first = vals[0];
-  const delta = last - first;
-  const trendClr = delta <= 0 ? '#34d399' : '#f87171';
-  const arrow = delta < -0.5 ? '↓' : delta > 0.5 ? '↑' : '→';
-  return `
-    <div class="trend-section">
-      <div class="trend-header">
-        <span style="font-size:0.65rem;color:#5a6180;text-transform:uppercase;letter-spacing:0.1em">
-          WACI-Verlauf (${history.length} Messungen)
-        </span>
-        <span style="font-size:0.95rem;font-weight:700;color:${trendClr}">${arrow} ${fmt(last)}</span>
+// ── Benchmark Bars ────────────────────────────────────────────
+function renderBmBars(portfolioWACI) {
+  const MAX = 300;
+  const allRows = [{name:'Dein Portfolio',v:portfolioWACI,note:'',color:waciColor(portfolioWACI),portfolio:true}, ...BENCHMARKS];
+  const rows = allRows.map(b=>{
+    const pct = Math.min(b.v/MAX*100,100).toFixed(1);
+    const isMe = b.portfolio;
+    const delta = isMe ? '' : (() => {
+      const d = b.v - portfolioWACI;
+      const c = d>0?'#34d399':'#f87171';
+      const s = d>0?'+':'-';
+      return `<span style="font-size:.58rem;color:${c};margin-left:4px">${s}${Math.abs(Math.round(d))}</span>`;
+    })();
+    const barBg = isMe
+      ? `background:${barGradient(portfolioWACI)};box-shadow:0 0 8px ${waciColor(portfolioWACI)}44`
+      : `background:${b.color}55`;
+    return `<div class="bm-row">
+      <span class="bm-name ${isMe?'highlight':''}">${b.name}</span>
+      <div class="bm-track">
+        <div class="bm-fill" style="width:${pct}%;${barBg};${isMe?'height:8px;margin-top:-1px':''}"></div>
       </div>
-      <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="overflow:visible;display:block">
-        <polyline points="${pts}" fill="none" stroke="${trendClr}" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-        ${history.map((h, i) => {
-          const x = ((i / (vals.length - 1)) * W).toFixed(1);
-          const y = toY(vals[i]).toFixed(1);
-          const isL = i === vals.length - 1;
-          return `<circle cx="${x}" cy="${y}" r="${isL ? 3.5 : 2}"
-                    fill="${isL ? trendClr : '#0d0f14'}" stroke="${trendClr}" stroke-width="1.5">
-                    <title>${h.date}: ${fmt(h.waci)}</title>
-                  </circle>`;
-        }).join('')}
-      </svg>
-      <div style="display:flex;justify-content:space-between;font-size:0.58rem;color:#2a3148;margin-top:4px">
-        <span>${history[0].date}</span>
-        <span>${history[history.length - 1].date}</span>
-      </div>
+      <span class="bm-val" style="color:${isMe?waciColor(portfolioWACI):'#4a5272'}">${fmt(b.v,1)}</span>
+      <span class="bm-note">${b.note||''}${delta}</span>
     </div>`;
+  });
+  // Add separator after "Dein Portfolio"
+  rows.splice(1, 0, '<div class="bm-separator"></div>');
+  return `<div class="bm-title">Benchmark-Vergleich (tCO₂ / $M)</div>${rows.join('')}`;
 }
 
-function renderChart(positions) {
-  const maxB = Math.max(...positions.map(p => p.contribution));
-  return positions.map((p, idx) => {
-    const pct   = (p.contribution / maxB * 100).toFixed(1);
-    const bClr  = getWaciColor(p.waci);
-    const vClr  = getBeitragColor(p.contribution);
-    const delay = Math.min(idx * 0.02, 0.5);
-    const estMk = p.isEstimated ? '<span title="Sektor-Schätzwert" style="color:#5a6180">~</span>' : '';
-    return `
-      <div class="bar-row">
-        <div class="bar-main">
-          <span class="sym">${p.sym}</span>
-          <div class="bar-wrap">
-            <div class="bar-fill" style="width:${pct}%;background:${bClr};animation-delay:${delay}s"></div>
-          </div>
-          <span class="beitrag-val" style="color:${vClr}">${fmt(p.contribution)}</span>
-          <span class="waci-badge">${estMk}${p.waci}</span>
-          <span class="weight-val">${(p.weight * 100).toFixed(1)}%</span>
+// ── KPIs ─────────────────────────────────────────────────────
+function renderKPIs(a) {
+  const wc = waciClass(a.portfolioWACI);
+  const rc = a.reduction>0.3?'green':a.reduction>0?'yellow':'red';
+  const sign = a.reduction>=0?'−':'+';
+  const ftColor = a.footprintT<20?'green':a.footprintT<50?'yellow':'red';
+  return `
+    <div class="card kpi"><div class="kpi-label">Portfolio WACI</div>
+      <div class="kpi-value ${wc}">${fmt(a.portfolioWACI)}</div>
+      <div class="kpi-sub">tCO₂ pro $M Umsatz</div></div>
+    <div class="card kpi"><div class="kpi-label">Reduktion vs. MSCI World</div>
+      <div class="kpi-value ${rc}">${sign}${Math.abs(Math.round(a.reduction*100))}%</div>
+      <div class="kpi-sub">Benchmark: 180 tCO₂/$M</div></div>
+    <div class="card kpi"><div class="kpi-label">CO₂-Fußabdruck</div>
+      <div class="kpi-value ${ftColor}">${fmt(a.footprintT,1)}</div>
+      <div class="kpi-sub">t CO₂e / Jahr (finanziert)</div></div>
+    <div class="card kpi"><div class="kpi-label">Portfoliowert</div>
+      <div class="kpi-value neutral">${fmtK(a.totalValue)}</div>
+      <div class="kpi-sub">EUR gesamt</div></div>
+    <div class="card kpi"><div class="kpi-label">Positionen</div>
+      <div class="kpi-value neutral">${a.numPositions}</div>
+      <div class="kpi-sub">aktive Positionen</div></div>`;
+}
+
+// ── Insights ──────────────────────────────────────────────────
+function renderInsights(a) {
+  // Card 1: Top emitters
+  const topC = a.top3.reduce((s,p)=>s+p.contribution,0);
+  const topPct = Math.round(topC/a.portfolioWACI*100);
+  const card1 = `<div class="card insight-card">
+    <div class="insight-title">🔴 CO₂-Haupttreiber</div>
+    ${a.top3.map((p,i)=>`
+      <div class="insight-row">
+        <span class="insight-rank">${i+1}.</span>
+        <span class="insight-sym">${p.sym}</span>
+        <span class="insight-name">${p.name}</span>
+        <span class="insight-val" style="color:${bColor(p.contribution)}">${fmt(p.contribution)}</span>
+        <span class="insight-sub">${(p.weight*100).toFixed(1)}%</span>
+      </div>`).join('')}
+    <div class="insight-footer">Diese ${a.top3.length} Positionen = <strong>${topPct}%</strong> des Portfolio-WACI</div>
+  </div>`;
+
+  // Card 2: Cleanest
+  const card2 = `<div class="card insight-card">
+    <div class="insight-title">🟢 CO₂-Sparmeister</div>
+    ${a.cleanest.map((p,i)=>`
+      <div class="insight-row">
+        <span class="insight-rank">${i+1}.</span>
+        <span class="insight-sym">${p.sym}</span>
+        <span class="insight-name">${p.name}</span>
+        <span class="insight-val green">${p.waci}</span>
+        <span class="insight-sub">${(p.weight*100).toFixed(1)}% Gew.</span>
+      </div>`).join('')}
+    <div class="insight-footer">Niedrigstes WACI unter Positionen &gt;0,4% Gewicht</div>
+  </div>`;
+
+  // Card 3: What-if
+  const card3 = `<div class="card insight-card">
+    <div class="insight-title">💡 Optimierungs-Potenzial</div>
+    ${a.whatIf.map((w,i)=>`
+      <div class="wi-row">
+        <div class="wi-action">${i===0?'Wenn Sie':'Zusätzlich'} <strong style="color:#8898b8">${w.sym}</strong> liquidieren:</div>
+        <div class="wi-result">
+          <span class="wi-new-waci" style="color:${waciColor(w.newWACI)}">${fmt(w.newWACI)}</span>
+          <span class="wi-arrow">tCO₂/$M</span>
+          <span class="wi-saving">↓ ${fmt(w.saving)} (${Math.round(w.saving/a.portfolioWACI*100)}%)</span>
         </div>
-        <div class="tooltip">${p.name} · ${p.reason} · ${fmtEur(p.val)} €</div>
-      </div>`;
+      </div>`).join('')}
+    <div class="insight-footer">Progressive Reduktion durch Umschichtung der <strong>Fossil-Positionen</strong></div>
+  </div>`;
+
+  return card1+card2+card3;
+}
+
+// ── Trend Sparkline ───────────────────────────────────────────
+function renderTrend(history) {
+  if(history.length<2)return'';
+  const vals=history.map(h=>h.waci);
+  const W=340,H=42,pad=4;
+  const minV=Math.min(...vals)*0.92, maxV=Math.max(...vals)*1.08, range=maxV-minV||1;
+  const toY=v=>H-((v-minV)/range)*(H-pad*2)-pad;
+  const pts=vals.map((v,i)=>`${((i/(vals.length-1))*W).toFixed(1)},${toY(v).toFixed(1)}`).join(' ');
+  const last=vals[vals.length-1],first=vals[0];
+  const delta=last-first;
+  const tC=delta<=0?'#34d399':'#f87171';
+  const arrow=delta<-0.5?'↓ Verbesserung':delta>0.5?'↑ Verschlechterung':'→ Stabil';
+  return `<div class="card trend-card">
+    <div class="trend-header">
+      <span class="trend-label">WACI-Verlauf · ${history.length} Messungen</span>
+      <span class="trend-current" style="color:${tC}">${arrow} ${fmt(last)}</span>
+    </div>
+    <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="display:block;overflow:visible">
+      <defs>
+        <linearGradient id="tG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${tC}" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="${tC}" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <polyline points="${pts} ${W},${H} 0,${H}" fill="url(#tG)" stroke="none"/>
+      <polyline points="${pts}" fill="none" stroke="${tC}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      ${history.map((h,i)=>{
+        const x=((i/(vals.length-1))*W).toFixed(1),y=toY(vals[i]).toFixed(1);
+        const iL=i===vals.length-1;
+        return`<circle cx="${x}" cy="${y}" r="${iL?4:2}" fill="${iL?tC:'#080b11'}" stroke="${tC}" stroke-width="1.5"><title>${h.date}: ${fmt(h.waci)} · ${fmtK(h.val)}€</title></circle>`;
+      }).join('')}
+    </svg>
+    <div class="trend-dates"><span>${history[0].date}</span><span>${history[history.length-1].date}</span></div>
+  </div>`;
+}
+
+// ── Bar Chart ─────────────────────────────────────────────────
+function renderChart(positions) {
+  const maxB=Math.max(...positions.map(p=>p.contribution));
+  let cumul=0;
+  return positions.map((p,idx)=>{
+    const pct=(p.contribution/maxB*100).toFixed(1);
+    const vC=bColor(p.contribution);
+    const delay=Math.min(idx*0.018,0.5);
+    const est=p.isEstimated?'<span title="Sektor-Schätzwert" style="color:#3a4462">~</span>':'';
+    cumul+=p.contribution;
+    const cumulPct=(cumul/positions.reduce((s,q)=>s+q.contribution,0)*100).toFixed(0);
+    const wciNote = p.waci>300?'Fossil':p.waci>80?'Erhöht':p.waci>20?'Moderat':'Gering';
+    return `<div class="bar-row">
+      <div class="bar-main">
+        <span class="sym">${p.sym}</span>
+        <div class="bar-wrap">
+          <div class="bar-fill" style="width:${pct}%;background:${barGradient(p.waci)};animation-delay:${delay}s"></div>
+        </div>
+        <span class="beitrag-val" style="color:${vC}">${fmt(p.contribution)}</span>
+        <span class="waci-badge">${est}${p.waci}</span>
+        <span class="weight-val">${(p.weight*100).toFixed(1)}%</span>
+        <span class="cumul-val" style="color:${cumulPct>80?'#f87171':cumulPct>50?'#fbbf24':'#2a3450'}">${cumulPct}%</span>
+      </div>
+      <div class="tooltip">${p.name} · <span style="color:${waciColor(p.waci)}">${wciNote} (WACI ${p.waci})</span> · ${p.reason} · Wert ${fmtEur(p.val)} €</div>
+    </div>`;
   }).join('');
 }
 
+// ── Sector Table + Donut ──────────────────────────────────────
 function renderSectorTable(sectorList, totalWACI) {
-  const maxC = Math.max(...sectorList.map(s => s.contribution));
-  return sectorList.map(s => {
-    const ac = getWaciColor(s.avgWaci);
-    const cc = getBeitragColor(s.contribution);
-    const barW = (s.contribution / maxC * 80).toFixed(1);
-    const share = totalWACI > 0 ? (s.contribution / totalWACI * 100).toFixed(0) : 0;
+  const maxC=Math.max(...sectorList.map(s=>s.contribution));
+  return sectorList.map(s=>{
+    const ac=waciColor(s.avgWaci), cc=bColor(s.contribution);
+    const share=(s.contribution/totalWACI*100).toFixed(0);
+    const barW=(s.contribution/maxC*60).toFixed(1);
     return `<tr>
-      <td>${s.name}</td>
-      <td class="right" style="color:#5a6180">${s.count}</td>
-      <td class="right" style="color:${ac};font-weight:600">${fmt(s.avgWaci, 0)}</td>
-      <td class="right" style="color:#5a6180">${(s.weight * 100).toFixed(1)}%</td>
-      <td class="right" style="color:${cc};font-weight:600">${fmt(s.contribution)}</td>
-      <td class="right">
-        <span class="sector-mini-bar" style="width:${barW}px;background:${ac}"></span>
-        <span style="font-size:0.65rem;color:#5a6180">${share}%</span>
+      <td><span class="sector-dot" style="background:${sectorColor(s.name)}"></span>${s.name}</td>
+      <td class="r" style="color:#4a5272">${s.count}</td>
+      <td class="r" style="color:${ac};font-weight:600">${fmt(s.avgWaci,0)}</td>
+      <td class="r" style="color:#4a5272">${(s.weight*100).toFixed(1)}%</td>
+      <td class="r" style="color:${cc};font-weight:600">${fmt(s.contribution)}</td>
+      <td class="r" style="white-space:nowrap">
+        <svg width="64" height="8" style="vertical-align:middle;margin-right:4px">
+          <rect x="0" y="1" width="60" height="6" rx="3" fill="#141820"/>
+          <rect x="0" y="1" width="${barW}" height="6" rx="3" fill="${ac}"/>
+        </svg>
+        <span style="font-size:.62rem;color:#4a5272">${share}%</span>
       </td>
     </tr>`;
   }).join('');
 }
 
+function renderDonut(sectorList, totalWACI) {
+  if(!sectorList.length) return '';
+  // Keep top 7, group rest
+  let sectors = sectorList.length>8 ? [
+    ...sectorList.slice(0,7),
+    {name:'Sonstige',contribution:sectorList.slice(7).reduce((s,x)=>s+x.contribution,0),weight:sectorList.slice(7).reduce((s,x)=>s+x.weight,0),count:sectorList.slice(7).reduce((s,x)=>s+x.count,0)}
+  ] : sectorList;
+
+  const cx=80,cy=80,ro=65,ri=40;
+  let cumAngle=-90;
+  const paths=[];
+  sectors.forEach(s=>{
+    const pct=s.contribution/totalWACI;
+    const sweep=pct*360;
+    if(sweep<1)return;
+    const a1=cumAngle*Math.PI/180, a2=(cumAngle+sweep)*Math.PI/180;
+    const x1o=(cx+ro*Math.cos(a1)).toFixed(1), y1o=(cy+ro*Math.sin(a1)).toFixed(1);
+    const x2o=(cx+ro*Math.cos(a2)).toFixed(1), y2o=(cy+ro*Math.sin(a2)).toFixed(1);
+    const x1i=(cx+ri*Math.cos(a2)).toFixed(1), y1i=(cy+ri*Math.sin(a2)).toFixed(1);
+    const x2i=(cx+ri*Math.cos(a1)).toFixed(1), y2i=(cy+ri*Math.sin(a1)).toFixed(1);
+    const large=sweep>180?1:0;
+    const d=`M${x1o} ${y1o} A${ro} ${ro} 0 ${large} 1 ${x2o} ${y2o} L${x1i} ${y1i} A${ri} ${ri} 0 ${large} 0 ${x2i} ${y2i} Z`;
+    paths.push({d,color:sectorColor(s.name),name:s.name,pct:(pct*100).toFixed(1)});
+    cumAngle+=sweep;
+  });
+
+  const svg=`<svg viewBox="0 0 160 160" style="width:160px;height:160px;display:block">
+    ${paths.map(p=>`<path d="${p.d}" fill="${p.color}" opacity="0.85" stroke="#080b11" stroke-width="1.5"><title>${p.name}: ${p.pct}%</title></path>`).join('')}
+    <text x="80" y="76" text-anchor="middle" fill="#4a5272" font-size="9" font-family="system-ui">WACI</text>
+    <text x="80" y="90" text-anchor="middle" fill="#dde2f2" font-size="16" font-weight="700" font-family="system-ui">${Math.round(totalWACI)}</text>
+  </svg>`;
+
+  const legend=paths.slice(0,6).map(p=>
+    `<div class="donut-legend-item">
+      <div class="donut-legend-dot" style="background:${p.color}"></div>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.name}</span>
+      <span style="color:#2a3450">${p.pct}%</span>
+    </div>`
+  ).join('');
+
+  return {svg,legend};
+}
+
+// ── Unknown ───────────────────────────────────────────────────
 function renderUnknown(syms) {
-  if (!syms.length) return '';
+  if(!syms.length)return'';
   return `<div class="unknown-box">
-    <div class="unknown-title">⚠ Sektor-basierte Schätzwerte – ${syms.length} Symbole nicht in Datenbank</div>
-    <div class="unknown-list">${syms.map(s => `<span class="unknown-chip">~${s}</span>`).join('')}</div>
+    <div class="unknown-title">⚠ Sektor-basierte Schätzwerte · ${syms.length} Symbole nicht in Datenbank</div>
+    <div class="unknown-list">${syms.map(s=>`<span class="unknown-chip">~${s}</span>`).join('')}</div>
   </div>`;
 }
 
-function renderBenchmark(a) {
-  const drivers = a.topDrivers.map(p => p.sym).join(' · ') || '–';
-  const dc      = a.topDrivers.reduce((s, p) => s + p.contribution, 0);
-  const dpct    = a.portfolioWACI > 0 ? Math.round(dc / a.portfolioWACI * 100) : 0;
+// ── Bottom Benchmark Card ─────────────────────────────────────
+function renderBottomBm(a) {
+  const drivers=a.topDrivers.map(p=>p.sym).join(' · ')||'–';
+  const dc=a.topDrivers.reduce((s,p)=>s+p.contribution,0);
+  const dpct=a.portfolioWACI>0?Math.round(dc/a.portfolioWACI*100):0;
+  // CO2 equivalents
+  const flights=Math.round(a.footprintT/1.5);
+  const cars=(a.footprintT/2.3).toFixed(1);
   return `
     <div>
-      <div class="kpi-label">Benchmark-Vergleich</div>
-      <div style="font-size:0.88rem;margin-top:4px">
-        Dein WACI <span class="green" style="font-weight:700">${fmt(a.portfolioWACI)}</span>
+      <div style="font-size:.62rem;color:#4a5272;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Benchmark-Ergebnis</div>
+      <div style="font-size:.9rem">
+        Dein WACI <span class="${waciClass(a.portfolioWACI)}" style="font-weight:700">${fmt(a.portfolioWACI)}</span>
         vs. MSCI World <span class="neutral" style="font-weight:700">180,0</span>
+        — <span class="${a.reduction>0?'green':'red'}">${a.reduction>0?'−':'+'} ${Math.abs(Math.round(a.reduction*100))}%</span> besser
+      </div>
+      <div style="font-size:.65rem;color:#2a3450;margin-top:4px">
+        ~${a.footprintT.toFixed(1)} t CO₂e/Jahr ≈ ${flights} Transatlantikflüge ≈ ${cars} PKW-Jahre
       </div>
     </div>
     <div style="text-align:right">
-      <div class="kpi-label">Haupttreiber (&gt;4% Beitrag)</div>
-      <div style="font-size:0.85rem;margin-top:4px;color:#fbbf24;font-weight:500">${drivers}</div>
-      <div style="font-size:0.63rem;color:#5a6180;margin-top:3px">= ${dpct}% des Portfolio-WACI</div>
+      <div style="font-size:.62rem;color:#4a5272;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Haupttreiber (&gt;4%)</div>
+      <div style="font-size:.85rem;color:#fbbf24;font-weight:500">${drivers}</div>
+      <div style="font-size:.62rem;color:#2a3450;margin-top:2px">= ${dpct}% des Portfolio-WACI</div>
     </div>`;
 }
 
-// ============================================================
-// MAIN RENDER
-// ============================================================
+// ── Main Render ───────────────────────────────────────────────
 function renderDashboard(a, history) {
-  document.getElementById('kpi-row').innerHTML       = renderKPIs(a);
-  document.getElementById('trend-section').innerHTML = renderSparkline(history);
+  document.getElementById('gauge-card').innerHTML = renderGauge(a.portfolioWACI) +
+    `<div class="gauge-footer">
+      <div class="footprint-tons" style="color:${waciColor(a.portfolioWACI)}">${fmt(a.footprintT,1)} t</div>
+      <div class="footprint-sub">CO₂e / Jahr (finanziert)</div>
+      <div class="footprint-equiv">≈ ${Math.round(a.footprintT/1.5)} Transatlantikflüge</div>
+    </div>`;
+  document.getElementById('bm-card').innerHTML = renderBmBars(a.portfolioWACI);
+  document.getElementById('kpi-row').innerHTML = renderKPIs(a);
+  document.getElementById('insights-row').innerHTML = renderInsights(a);
+  document.getElementById('trend-section').innerHTML = renderTrend(history);
   document.getElementById('chart-container').innerHTML = renderChart(a.positions);
-  document.getElementById('sector-tbody').innerHTML  = renderSectorTable(a.sectorList, a.portfolioWACI);
+  document.getElementById('sector-tbody').innerHTML = renderSectorTable(a.sectorList, a.portfolioWACI);
+  const donut = renderDonut(a.sectorList, a.portfolioWACI);
+  if(donut){
+    document.getElementById('donut-container').innerHTML = donut.svg;
+    document.getElementById('donut-legend').innerHTML = donut.legend;
+  }
   document.getElementById('unknown-section').innerHTML = renderUnknown(a.estimated);
-  document.getElementById('benchmark-card').innerHTML = renderBenchmark(a);
-
-  const today = new Date(a.date).toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
-  document.getElementById('dash-meta').textContent =
-    `Stand: ${today} · ${a.numPositions} Positionen · ${fmtEur(a.totalValue)} € Gesamtwert`;
-
-  document.getElementById('upload-screen').style.display = 'none';
-  document.getElementById('dashboard').style.display     = 'block';
+  document.getElementById('bottom-bm').innerHTML = renderBottomBm(a);
+  const today=new Date(a.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+  document.getElementById('dash-meta').textContent=`Stand: ${today} · ${a.numPositions} Positionen · ${fmtK(a.totalValue)} € Gesamtwert`;
+  document.getElementById('upload-screen').style.display='none';
+  document.getElementById('dashboard').style.display='block';
 }
 
-// ============================================================
-// FILE PROCESSING
-// ============================================================
+// ── File Processing ───────────────────────────────────────────
 function processFile(file) {
-  if (!file) return;
-  if (!file.name.toLowerCase().endsWith('.csv')) {
-    alert('Bitte eine CSV-Datei auswählen (.csv).');
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const rows     = parseCSV(e.target.result);
-      const analysis = analyzePortfolio(rows);
-      pushHistory(analysis);
-      saveLastAnalysis(analysis);
-      renderDashboard(analysis, loadHistory());
-    } catch (err) {
-      alert('Fehler beim Verarbeiten:\n' + err.message);
-      console.error(err);
-    }
+  if(!file)return;
+  if(!file.name.toLowerCase().endsWith('.csv')){alert('Bitte eine CSV-Datei auswählen.');return;}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const rows=parseCSV(e.target.result);
+      const analysis=analyzePortfolio(rows);
+      pushHistory(analysis); saveLastAna(analysis);
+      renderDashboard(analysis,loadHistory());
+    }catch(err){alert('Fehler:\n'+err.message);console.error(err);}
   };
-  reader.readAsText(file, 'UTF-8');
+  reader.readAsText(file,'UTF-8');
 }
 
-// ============================================================
-// EVENT HANDLERS
-// ============================================================
-document.addEventListener('DOMContentLoaded', () => {
-  const dropZone  = document.getElementById('drop-zone');
-  const fileInput = document.getElementById('file-input');
-  const histHint  = document.getElementById('history-hint');
-  const loadLastBtn = document.getElementById('load-last-btn');
-
-  // Show hint if prior analysis exists
-  const saved = loadLastAnalysis();
-  if (saved) {
-    histHint.style.display = 'block';
-    histHint.innerHTML = `Letzte Analyse: ${saved.date} · ${fmtEur(saved.totalValue)} € ·
-      <button id="load-last-btn">Ansicht laden</button>`;
-    document.getElementById('load-last-btn').addEventListener('click', () => {
-      renderDashboard(saved, loadHistory());
-    });
+// ── Init ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  const dz=document.getElementById('drop-zone');
+  const fi=document.getElementById('file-input');
+  const hh=document.getElementById('history-hint');
+  const saved=loadLastAna();
+  if(saved){
+    const d=new Date(saved.date).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'});
+    hh.style.display='block';
+    hh.innerHTML=`Letzte Analyse: ${d} · WACI ${fmt(saved.portfolioWACI)} · ${fmtK(saved.totalValue)}€ —
+      <button id="ll">Ansicht laden</button>`;
+    document.getElementById('ll').onclick=()=>renderDashboard(saved,loadHistory());
   }
-
-  // Click to open file dialog
-  dropZone.addEventListener('click', () => fileInput.click());
-  document.getElementById('drop-btn-label').addEventListener('click', e => {
-    e.stopPropagation();
-    fileInput.click();
-  });
-
-  fileInput.addEventListener('change', e => {
-    if (e.target.files[0]) processFile(e.target.files[0]);
-    e.target.value = '';
-  });
-
-  // Drag & drop
-  dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-  dropZone.addEventListener('dragleave', e => { if (!dropZone.contains(e.relatedTarget)) dropZone.classList.remove('drag-over'); });
-  dropZone.addEventListener('drop', e => {
-    e.preventDefault();
-    dropZone.classList.remove('drag-over');
-    const f = e.dataTransfer.files[0];
-    if (f) processFile(f);
-  });
-
-  // Reset button
-  document.getElementById('reset-btn').addEventListener('click', () => {
-    document.getElementById('dashboard').style.display     = 'none';
-    document.getElementById('upload-screen').style.display = 'flex';
+  dz.addEventListener('click',()=>fi.click());
+  document.getElementById('drop-btn-label').addEventListener('click',e=>{e.stopPropagation();fi.click();});
+  fi.addEventListener('change',e=>{if(e.target.files[0])processFile(e.target.files[0]);e.target.value='';});
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+  dz.addEventListener('dragleave',e=>{if(!dz.contains(e.relatedTarget))dz.classList.remove('drag-over');});
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');if(e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);});
+  document.getElementById('reset-btn').addEventListener('click',()=>{
+    document.getElementById('dashboard').style.display='none';
+    document.getElementById('upload-screen').style.display='flex';
   });
 });
 </script>
