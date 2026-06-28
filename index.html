@@ -596,7 +596,7 @@ function renderGauge(waci) {
 
   return `
     <div class="gauge-eyebrow">CO₂-Score</div>
-    <svg viewBox="0 0 190 105" style="width:180px;overflow:visible">
+    <svg viewBox="0 0 190 96" style="width:180px;height:91px;display:block">
       <!-- Zone backgrounds (dim) -->
       ${zones.map(z=>`<path d="${arc(z.t1,z.t2)}" fill="none" stroke="${z.color}" stroke-width="${SW}" opacity="0.1"/>`).join('')}
       <!-- Grey track -->
@@ -609,14 +609,16 @@ function renderGauge(waci) {
       }).join('')}
       <!-- End marker -->
       ${t>0.02?`<circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="5" fill="${vColor}" stroke="#080b11" stroke-width="2.5"/>`:``}
-      <!-- Labels -->
-      <text x="${(sx-12).toFixed(1)}" y="${(sy+4).toFixed(1)}" text-anchor="end" fill="#2a3450" font-size="9" font-family="system-ui">0</text>
-      <text x="${(rrx+10).toFixed(1)}" y="${(rry+4).toFixed(1)}" text-anchor="start" fill="#2a3450" font-size="9" font-family="system-ui">${MAX}+</text>
-      <!-- Value -->
-      <text x="${cx}" y="${cy+12}" text-anchor="middle" fill="${vColor}" font-size="30" font-weight="700" letter-spacing="-1.5" font-family="system-ui">${Math.round(waci)}</text>
-      <text x="${cx}" y="${cy+25}" text-anchor="middle" fill="#4a5272" font-size="9" font-family="system-ui">tCO₂ / $M Umsatz</text>
-      <text x="${cx}" y="${cy+39}" text-anchor="middle" fill="${vColor}" font-size="10" font-weight="600" font-family="system-ui" opacity="0.8">${rating}</text>
-    </svg>`;
+      <!-- Scale labels -->
+      <text x="${(sx-12).toFixed(1)}" y="${(sy+4).toFixed(1)}" text-anchor="end" fill="#5c6a8c" font-size="9" font-family="system-ui">0</text>
+      <text x="${(rrx+10).toFixed(1)}" y="${(rry+4).toFixed(1)}" text-anchor="start" fill="#5c6a8c" font-size="9" font-family="system-ui">${MAX}+</text>
+      <!-- WACI value only -->
+      <text x="${cx}" y="${cy+8}" text-anchor="middle" fill="${vColor}" font-size="30" font-weight="700" letter-spacing="-1.5" font-family="system-ui">${Math.round(waci)}</text>
+    </svg>
+    <div style="text-align:center;margin-top:2px">
+      <div style="font-size:0.62rem;color:#5c6a8c;line-height:1.4">tCO₂ / $M Umsatz</div>
+      <div style="font-size:0.72rem;font-weight:600;color:${vColor};margin-top:2px;opacity:0.9">${rating}</div>
+    </div>`;
 }
 
 // ── Benchmark Bars ────────────────────────────────────────────
