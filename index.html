@@ -23,11 +23,15 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:
+        radial-gradient(1100px 500px at 50% -180px, #101725 0%, transparent 70%),
+        var(--bg);
       color: var(--text);
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
+    .num { font-variant-numeric: tabular-nums; }
 
     /* ── Upload ─────────────────────────────────────────────── */
     #upload-screen {
@@ -76,9 +80,10 @@
     }
     .portfolio-eyebrow {
       font-size: 0.62rem; font-weight: 600; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 4px;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 5px;
     }
-    .portfolio-meta { font-size: 0.67rem; color: var(--dim); }
+    .portfolio-title { font-size: 1.3rem; font-weight: 700; letter-spacing: -.015em; margin-bottom: 5px; }
+    .portfolio-meta { font-size: 0.7rem; color: var(--dim); }
     .reset-btn {
       padding: 7px 16px; background: var(--card); border: 1px solid var(--border);
       border-radius: 8px; font-size: 0.7rem; color: var(--muted);
@@ -88,9 +93,12 @@
 
     /* ── Base card ───────────────────────────────────────────── */
     .card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 14px; overflow: hidden;
+      background: linear-gradient(180deg, #131926 0%, var(--card) 60%);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      transition: border-color .2s;
     }
+    .card:hover { border-color: var(--border2); }
     .card-p { padding: 18px 20px; }
 
     /* ── Score Row (Gauge + Benchmarks) ──────────────────────── */
@@ -113,31 +121,33 @@
     .bm-name.highlight { color: var(--text); font-weight: 600; }
     .bm-track { flex: 1; height: 6px; background: var(--bg2); border-radius: 3px; overflow: hidden; position: relative; }
     .bm-fill { height: 100%; border-radius: 3px; }
-    .bm-val { font-size: 0.7rem; font-weight: 600; width: 38px; text-align: right; flex-shrink: 0; }
-    .bm-note { font-size: 0.6rem; color: var(--dim); width: 88px; flex-shrink: 0; }
+    .bm-val { font-size: 0.7rem; font-weight: 600; width: 38px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .bm-note { font-size: 0.6rem; color: var(--dim); width: 96px; flex-shrink: 0; display: flex; align-items: center; gap: 5px; }
+    .bm-delta { font-size: 0.58rem; font-weight: 600; padding: 1px 6px; border-radius: 8px; font-variant-numeric: tabular-nums; }
     .bm-separator { height: 1px; background: var(--border); margin: 8px 0; }
 
     /* ── KPI Row ─────────────────────────────────────────────── */
     .kpi-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 14px; }
-    .kpi { padding: 16px 18px; }
-    .kpi-label { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 9px; }
-    .kpi-value { font-size: 1.7rem; font-weight: 700; letter-spacing: -.025em; line-height: 1; }
-    .kpi-sub { font-size: 0.6rem; color: var(--muted); margin-top: 5px; }
+    .kpi { padding: 17px 18px 15px; position: relative; }
+    .kpi::before {
+      content: ''; position: absolute; top: 0; left: 18px; right: 18px; height: 2px;
+      border-radius: 0 0 2px 2px; background: var(--accent, transparent); opacity: .85;
+    }
+    .kpi-label { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; }
+    .kpi-value { font-size: 1.8rem; font-weight: 700; letter-spacing: -.025em; line-height: 1; }
+    .kpi-sub { font-size: 0.62rem; color: var(--muted); margin-top: 6px; }
     .green  { color: var(--green); }
     .red    { color: var(--red);   }
     .yellow { color: var(--yellow);}
     .blue   { color: var(--blue);  }
     .purple { color: var(--purple);}
-    .neutral{ color: #94a3b8;      }
-    .kpi-value.green  { text-shadow: 0 0 24px rgba(52,211,153,.35); }
-    .kpi-value.red    { text-shadow: 0 0 24px rgba(248,113,113,.35); }
-    .kpi-value.yellow { text-shadow: 0 0 24px rgba(251,191,36,.35); }
-    .kpi-value.blue   { text-shadow: 0 0 24px rgba(96,165,250,.35); }
+    .neutral{ color: #aab6cf;      }
 
     /* ── Insights Row ────────────────────────────────────────── */
     .insights-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
     .insight-card { padding: 16px 18px; }
-    .insight-title { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; }
+    .insight-title { display: flex; align-items: center; gap: 7px; font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; }
+    .insight-title .tdot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
     .insight-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--border); }
     .insight-row:last-of-type { border-bottom: none; }
     .insight-rank { font-size: 0.65rem; color: var(--muted); width: 14px; flex-shrink: 0; }
@@ -165,7 +175,8 @@
     .trend-dates { display: flex; justify-content: space-between; font-size: 0.58rem; color: var(--dim); margin-top: 5px; }
 
     /* ── Chart ───────────────────────────────────────────────── */
-    .section-title { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; margin-top: 28px; }
+    .section-title { display: flex; align-items: center; gap: 8px; font-size: 0.64rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; margin-top: 28px; }
+    .section-title::before { content: ''; width: 3px; height: 12px; border-radius: 2px; background: var(--blue); flex-shrink: 0; }
     .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
     .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.62rem; color: var(--muted); }
     .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
@@ -178,13 +189,20 @@
     .bar-row:hover { background: #1a2030; }
     .bar-main { display: flex; align-items: center; gap: 10px; }
     .sym { font-size: 0.7rem; font-weight: 700; color: #98a8cc; width: 50px; flex-shrink: 0; }
-    .bar-wrap { flex: 1; height: 7px; background: #1a2235; border-radius: 4px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 4px; transform-origin: left center; animation: growBar .65s cubic-bezier(.4,0,.2,1) both; }
+    .bar-wrap { flex: 1; height: 7px; background: #1a2235; border-radius: 0 4px 4px 0; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 0 4px 4px 0; transform-origin: left center; animation: growBar .65s cubic-bezier(.4,0,.2,1) both; }
     @keyframes growBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-    .beitrag-val { font-size: 0.7rem; font-weight: 600; width: 36px; text-align: right; flex-shrink: 0; }
-    .waci-badge  { font-size: 0.6rem; width: 60px; text-align: right; color: var(--muted); flex-shrink: 0; }
-    .weight-val  { font-size: 0.6rem; color: var(--muted); width: 36px; text-align: right; flex-shrink: 0; }
-    .cumul-val   { font-size: 0.6rem; color: var(--dim); width: 40px; text-align: right; flex-shrink: 0; }
+    @media (prefers-reduced-motion: reduce) { .bar-fill { animation: none; } }
+    .beitrag-val { font-size: 0.7rem; font-weight: 600; width: 36px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .waci-badge  { font-size: 0.62rem; width: 60px; text-align: right; color: var(--muted); flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .weight-val  { font-size: 0.62rem; color: var(--muted); width: 36px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .cumul-val   { font-size: 0.62rem; color: var(--dim); width: 40px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .show-all-btn {
+      display: block; width: 100%; margin-top: 8px; padding: 9px 0;
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      font-size: 0.7rem; color: var(--muted); cursor: pointer; transition: all .15s;
+    }
+    .show-all-btn:hover { border-color: var(--border2); color: var(--text); }
     .tooltip { display: none; font-size: 0.62rem; color: #8090b4; padding: 4px 0 0 60px; line-height: 1.5; }
     .bar-row:hover .tooltip { display: block; }
 
@@ -193,7 +211,7 @@
     .sector-table { width: 100%; border-collapse: collapse; }
     .sector-table th { font-size: 0.57rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding: 0 8px 8px; text-align: left; border-bottom: 1px solid var(--border); font-weight: 500; }
     .sector-table th.r, .sector-table td.r { text-align: right; }
-    .sector-table td { padding: 8px; font-size: 0.77rem; border-bottom: 1px solid var(--border); }
+    .sector-table td { padding: 9px 8px; font-size: 0.77rem; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
     .sector-table tr:hover td { background: #1a2030; }
     .sector-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; vertical-align: middle; flex-shrink: 0; }
     .donut-wrap { display: flex; flex-direction: column; align-items: center; }
@@ -254,7 +272,8 @@
 
   <div class="dash-header">
     <div>
-      <div class="portfolio-eyebrow">Portfolio CO₂-Intensität (WACI)</div>
+      <div class="portfolio-eyebrow">CO₂-Analyse</div>
+      <div class="portfolio-title">Portfolio CO₂-Intensität <span style="color:var(--muted);font-weight:500">· WACI</span></div>
       <div class="portfolio-meta" id="dash-meta"></div>
     </div>
     <button class="reset-btn" id="reset-btn">↑ Neue Datei</button>
@@ -473,12 +492,7 @@ function waciClass(w) {
 function bColor(b) {
   return b>5?'#f87171':b>2?'#fbbf24':b>0.5?'#60a5fa':'#34d399';
 }
-function barGradient(w) {
-  if(w>300) return 'linear-gradient(90deg,#f87171,#dc2626)';
-  if(w>80)  return 'linear-gradient(90deg,#fbbf24,#d97706)';
-  if(w>20)  return 'linear-gradient(90deg,#60a5fa,#2563eb)';
-  return 'linear-gradient(90deg,#34d399,#059669)';
-}
+function barGradient(w) { return waciColor(w); }
 function getFallback(sector,secType) {
   if(secType==='ETF')   return {waci:55,reason:'ETF – Sektordurchschnitt (geschätzt)'};
   if(secType==='FUND')  return {waci:45,reason:'Fonds – Sektordurchschnitt (geschätzt)'};
@@ -600,7 +614,7 @@ function renderGauge(waci) {
       <!-- Zone backgrounds (dim) -->
       ${zones.map(z=>`<path d="${arc(z.t1,z.t2)}" fill="none" stroke="${z.color}" stroke-width="${SW}" opacity="0.1"/>`).join('')}
       <!-- Grey track -->
-      <path d="${arc(0,0.9999)}" fill="none" stroke="#1a1e2a" stroke-width="${SW}" stroke-linecap="round"/>
+      <path d="${arc(0,0.9999)}" fill="none" stroke="#20293c" stroke-width="${SW}" stroke-linecap="round"/>
       <!-- Filled zones up to t -->
       ${zones.map(z=>{
         if(t<=z.t1)return'';
@@ -608,7 +622,7 @@ function renderGauge(waci) {
         return`<path d="${arc(z.t1,to)}" fill="none" stroke="${z.color}" stroke-width="${SW}" stroke-linecap="round"/>`;
       }).join('')}
       <!-- End marker -->
-      ${t>0.02?`<circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="5" fill="${vColor}" stroke="#080b11" stroke-width="2.5"/>`:``}
+      ${t>0.02?`<circle cx="${nx.toFixed(1)}" cy="${ny.toFixed(1)}" r="5" fill="${vColor}" stroke="#111620" stroke-width="2.5"/>`:``}
       <!-- Scale labels -->
       <text x="${(sx-12).toFixed(1)}" y="${(sy+4).toFixed(1)}" text-anchor="end" fill="#5c6a8c" font-size="9" font-family="system-ui">0</text>
       <text x="${(rrx+10).toFixed(1)}" y="${(rry+4).toFixed(1)}" text-anchor="start" fill="#5c6a8c" font-size="9" font-family="system-ui">${MAX}+</text>
@@ -630,20 +644,21 @@ function renderBmBars(portfolioWACI) {
     const isMe = b.portfolio;
     const delta = isMe ? '' : (() => {
       const d = b.v - portfolioWACI;
-      const c = d>0?'#34d399':'#f87171';
-      const s = d>0?'+':'-';
-      return `<span style="font-size:.58rem;color:${c};margin-left:4px">${s}${Math.abs(Math.round(d))}</span>`;
+      const good = d>0;
+      const c = good?'var(--green)':'var(--red)';
+      const bg = good?'rgba(52,211,153,.12)':'rgba(248,113,113,.12)';
+      return `<span class="bm-delta" style="color:${c};background:${bg}">${good?'−':'+'}${Math.abs(Math.round(d))}</span>`;
     })();
     const barBg = isMe
-      ? `background:${barGradient(portfolioWACI)};box-shadow:0 0 8px ${waciColor(portfolioWACI)}44`
-      : `background:${b.color}55`;
+      ? `background:${waciColor(portfolioWACI)}`
+      : `background:${b.color}66`;
     return `<div class="bm-row">
       <span class="bm-name ${isMe?'highlight':''}">${b.name}</span>
       <div class="bm-track">
         <div class="bm-fill" style="width:${pct}%;${barBg};${isMe?'height:8px;margin-top:-1px':''}"></div>
       </div>
-      <span class="bm-val" style="color:${isMe?waciColor(portfolioWACI):'#4a5272'}">${fmt(b.v,1)}</span>
-      <span class="bm-note">${b.note||''}${delta}</span>
+      <span class="bm-val" style="color:${isMe?waciColor(portfolioWACI):'#8e9cbd'}">${fmt(b.v,1)}</span>
+      <span class="bm-note"><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${b.note||''}</span>${delta}</span>
     </div>`;
   });
   // Add separator after "Dein Portfolio"
@@ -657,22 +672,16 @@ function renderKPIs(a) {
   const rc = a.reduction>0.3?'green':a.reduction>0?'yellow':'red';
   const sign = a.reduction>=0?'−':'+';
   const ftColor = a.footprintT<20?'green':a.footprintT<50?'yellow':'red';
-  return `
-    <div class="card kpi"><div class="kpi-label">Portfolio WACI</div>
-      <div class="kpi-value ${wc}">${fmt(a.portfolioWACI)}</div>
-      <div class="kpi-sub">tCO₂ pro $M Umsatz</div></div>
-    <div class="card kpi"><div class="kpi-label">Reduktion vs. MSCI World</div>
-      <div class="kpi-value ${rc}">${sign}${Math.abs(Math.round(a.reduction*100))}%</div>
-      <div class="kpi-sub">Benchmark: 180 tCO₂/$M</div></div>
-    <div class="card kpi"><div class="kpi-label">CO₂-Fußabdruck</div>
-      <div class="kpi-value ${ftColor}">${fmt(a.footprintT,1)}</div>
-      <div class="kpi-sub">t CO₂e / Jahr (finanziert)</div></div>
-    <div class="card kpi"><div class="kpi-label">Portfoliowert</div>
-      <div class="kpi-value neutral">${fmtK(a.totalValue)}</div>
-      <div class="kpi-sub">EUR gesamt</div></div>
-    <div class="card kpi"><div class="kpi-label">Positionen</div>
-      <div class="kpi-value neutral">${a.numPositions}</div>
-      <div class="kpi-sub">aktive Positionen</div></div>`;
+  const ACC = {green:'var(--green)',yellow:'var(--yellow)',red:'var(--red)',blue:'var(--blue)'};
+  const tile = (label,val,cls,sub,acc)=>`
+    <div class="card kpi" style="--accent:${acc||'transparent'}"><div class="kpi-label">${label}</div>
+      <div class="kpi-value ${cls}">${val}</div>
+      <div class="kpi-sub">${sub}</div></div>`;
+  return tile('Portfolio WACI', fmt(a.portfolioWACI), wc, 'tCO₂ pro $M Umsatz', ACC[wc])
+       + tile('Reduktion vs. MSCI World', `${sign}${Math.abs(Math.round(a.reduction*100))}%`, rc, 'Benchmark: 180 tCO₂/$M', ACC[rc])
+       + tile('CO₂-Fußabdruck', fmt(a.footprintT,1), ftColor, 't CO₂e / Jahr (finanziert)', ACC[ftColor])
+       + tile('Portfoliowert', fmtK(a.totalValue), 'neutral', 'EUR gesamt')
+       + tile('Positionen', a.numPositions, 'neutral', 'aktive Positionen');
 }
 
 // ── Insights ──────────────────────────────────────────────────
@@ -681,7 +690,7 @@ function renderInsights(a) {
   const topC = a.top3.reduce((s,p)=>s+p.contribution,0);
   const topPct = Math.round(topC/a.portfolioWACI*100);
   const card1 = `<div class="card insight-card">
-    <div class="insight-title">🔴 CO₂-Haupttreiber</div>
+    <div class="insight-title"><span class="tdot" style="background:var(--red)"></span>CO₂-Haupttreiber</div>
     ${a.top3.map((p,i)=>`
       <div class="insight-row">
         <span class="insight-rank">${i+1}.</span>
@@ -695,7 +704,7 @@ function renderInsights(a) {
 
   // Card 2: Cleanest
   const card2 = `<div class="card insight-card">
-    <div class="insight-title">🟢 CO₂-Sparmeister</div>
+    <div class="insight-title"><span class="tdot" style="background:var(--green)"></span>CO₂-Sparmeister</div>
     ${a.cleanest.map((p,i)=>`
       <div class="insight-row">
         <span class="insight-rank">${i+1}.</span>
@@ -709,7 +718,7 @@ function renderInsights(a) {
 
   // Card 3: What-if
   const card3 = `<div class="card insight-card">
-    <div class="insight-title">💡 Optimierungs-Potenzial</div>
+    <div class="insight-title"><span class="tdot" style="background:var(--yellow)"></span>Optimierungs-Potenzial</div>
     ${a.whatIf.map((w,i)=>`
       <div class="wi-row">
         <div class="wi-action">${i===0?'Wenn Sie':'Zusätzlich'} <strong style="color:#a0b0d4">${w.sym}</strong> liquidieren:</div>
@@ -754,7 +763,7 @@ function renderTrend(history) {
       ${history.map((h,i)=>{
         const x=((i/(vals.length-1))*W).toFixed(1),y=toY(vals[i]).toFixed(1);
         const iL=i===vals.length-1;
-        return`<circle cx="${x}" cy="${y}" r="${iL?4:2}" fill="${iL?tC:'#080b11'}" stroke="${tC}" stroke-width="1.5"><title>${h.date}: ${fmt(h.waci)} · ${fmtK(h.val)}€</title></circle>`;
+        return`<circle cx="${x}" cy="${y}" r="${iL?4:2}" fill="${iL?tC:'#111620'}" stroke="${tC}" stroke-width="1.5"><title>${h.date}: ${fmt(h.waci)} · ${fmtK(h.val)}€</title></circle>`;
       }).join('')}
     </svg>
     <div class="trend-dates"><span>${history[0].date}</span><span>${history[history.length-1].date}</span></div>
@@ -762,31 +771,41 @@ function renderTrend(history) {
 }
 
 // ── Bar Chart ─────────────────────────────────────────────────
-function renderChart(positions) {
+const CHART_PREVIEW = 15;
+function renderChart(positions, showAll=false) {
   const maxB=Math.max(...positions.map(p=>p.contribution));
+  const totalC=positions.reduce((s,q)=>s+q.contribution,0);
+  const visible = showAll ? positions : positions.slice(0,CHART_PREVIEW);
   let cumul=0;
-  return positions.map((p,idx)=>{
+  const rows = positions.map((p,idx)=>{
+    cumul+=p.contribution;
+    if(idx>=visible.length) return '';
     const pct=(p.contribution/maxB*100).toFixed(1);
     const vC=bColor(p.contribution);
     const delay=Math.min(idx*0.018,0.5);
     const est=p.isEstimated?'<span title="Sektor-Schätzwert" style="color:#7080a0">~</span>':'';
-    cumul+=p.contribution;
-    const cumulPct=(cumul/positions.reduce((s,q)=>s+q.contribution,0)*100).toFixed(0);
+    const cumulPct=(cumul/totalC*100).toFixed(0);
     const wciNote = p.waci>300?'Fossil':p.waci>80?'Erhöht':p.waci>20?'Moderat':'Gering';
     return `<div class="bar-row">
       <div class="bar-main">
         <span class="sym">${p.sym}</span>
         <div class="bar-wrap">
-          <div class="bar-fill" style="width:${pct}%;background:${barGradient(p.waci)};animation-delay:${delay}s"></div>
+          <div class="bar-fill" style="width:${pct}%;background:${waciColor(p.waci)};animation-delay:${delay}s"></div>
         </div>
         <span class="beitrag-val" style="color:${vC}">${fmt(p.contribution)}</span>
         <span class="waci-badge">${est}${p.waci}</span>
         <span class="weight-val">${(p.weight*100).toFixed(1)}%</span>
-        <span class="cumul-val" style="color:${cumulPct>80?'#f87171':cumulPct>50?'#fbbf24':'#5c6a8c'}">${cumulPct}%</span>
+        <span class="cumul-val">${cumulPct}%</span>
       </div>
       <div class="tooltip">${p.name} · <span style="color:${waciColor(p.waci)}">${wciNote} (WACI ${p.waci})</span> · ${p.reason} · Wert ${fmtEur(p.val)} €</div>
     </div>`;
   }).join('');
+  const toggle = positions.length>CHART_PREVIEW
+    ? `<button class="show-all-btn" id="chart-toggle">${showAll
+        ? '↑ Nur Top 15 anzeigen'
+        : `↓ Alle ${positions.length} Positionen anzeigen`}</button>`
+    : '';
+  return rows + toggle;
 }
 
 // ── Sector Table + Donut ──────────────────────────────────────
@@ -840,7 +859,7 @@ function renderDonut(sectorList, totalWACI) {
   });
 
   const svg=`<svg viewBox="0 0 160 160" style="width:160px;height:160px;display:block">
-    ${paths.map(p=>`<path d="${p.d}" fill="${p.color}" opacity="0.85" stroke="#080b11" stroke-width="1.5"><title>${p.name}: ${p.pct}%</title></path>`).join('')}
+    ${paths.map(p=>`<path d="${p.d}" fill="${p.color}" opacity="0.85" stroke="#111620" stroke-width="2"><title>${p.name}: ${p.pct}%</title></path>`).join('')}
     <text x="80" y="76" text-anchor="middle" fill="#8e9cbd" font-size="9" font-family="system-ui">WACI</text>
     <text x="80" y="90" text-anchor="middle" fill="#eaedfa" font-size="16" font-weight="700" font-family="system-ui">${Math.round(totalWACI)}</text>
   </svg>`;
@@ -904,7 +923,12 @@ function renderDashboard(a, history) {
   document.getElementById('kpi-row').innerHTML = renderKPIs(a);
   document.getElementById('insights-row').innerHTML = renderInsights(a);
   document.getElementById('trend-section').innerHTML = renderTrend(history);
-  document.getElementById('chart-container').innerHTML = renderChart(a.positions);
+  const drawChart = (showAll)=>{
+    document.getElementById('chart-container').innerHTML = renderChart(a.positions, showAll);
+    const tg=document.getElementById('chart-toggle');
+    if(tg) tg.onclick=()=>drawChart(!showAll);
+  };
+  drawChart(false);
   document.getElementById('sector-tbody').innerHTML = renderSectorTable(a.sectorList, a.portfolioWACI);
   const donut = renderDonut(a.sectorList, a.portfolioWACI);
   if(donut){
