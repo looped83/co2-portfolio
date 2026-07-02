@@ -315,7 +315,7 @@
   <!-- Chart -->
   <div class="section-title">CO₂-Beitrag je Position — sortiert nach Beitrag</div>
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Fossil/Hoch (&gt;300)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Sehr hoch (&gt;300)</div>
     <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Mittel (80–300)</div>
     <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Niedrig (20–80)</div>
     <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div>Sehr gering (&lt;20)</div>
@@ -746,7 +746,7 @@ function renderInsights(a) {
           <span class="wi-saving">↓ ${fmt(w.saving)} (${Math.round(w.saving/a.portfolioWACI*100)}%)</span>
         </div>
       </div>`).join('')}
-    <div class="insight-footer">Progressive Reduktion durch Umschichtung der <strong>Fossil-Positionen</strong></div>
+    <div class="insight-footer">Progressive Reduktion durch Umschichtung der <strong>emissionsintensivsten Positionen</strong></div>
   </div>`;
 
   return card1+card2+card3;
@@ -803,7 +803,7 @@ function renderChart(positions, showAll=false) {
     const delay=Math.min(idx*0.018,0.5);
     const est=p.isEstimated?'<span title="Sektor-Schätzwert" style="color:#7080a0">~</span>':'';
     const cumulPct=(cumul/totalC*100).toFixed(0);
-    const wciNote = p.waci>300?'Fossil':p.waci>80?'Erhöht':p.waci>20?'Moderat':'Gering';
+    const wciNote = p.waci>300?'Sehr hoch':p.waci>80?'Erhöht':p.waci>20?'Moderat':'Gering';
     return `<div class="bar-row">
       <div class="bar-main">
         <span class="sym">${p.sym}</span>
