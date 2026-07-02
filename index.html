@@ -226,7 +226,22 @@
     .unknown-chip { padding: 3px 10px; background: #1a2030; border: 1px solid var(--border2); border-radius: 20px; font-size: 0.67rem; color: #a0b0d4; }
 
     /* ── Bottom Benchmark Card ───────────────────────────────── */
-    .bottom-bm { padding: 16px 20px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .bottom-bm { margin-top: 20px; display: grid; grid-template-columns: 1.15fr 1fr 1.15fr; }
+    .bb-seg { padding: 16px 20px; min-width: 0; }
+    .bb-seg + .bb-seg { border-left: 1px solid var(--border); }
+    .bb-label { font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; }
+    .bb-verdict { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+    .bb-verdict-num { font-size: 1.5rem; font-weight: 700; letter-spacing: -.02em; }
+    .bb-sub { font-size: 0.68rem; color: var(--muted); }
+    .bb-equiv-row { font-size: 0.74rem; color: var(--muted); padding: 2px 0; }
+    .bb-equiv-row strong { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+    .bb-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .bb-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; background: var(--card2); border: 1px solid var(--border2); border-radius: 20px; font-size: 0.68rem; font-weight: 600; color: var(--text); }
+    .bb-chip .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    @media (max-width: 780px) {
+      .bottom-bm { grid-template-columns: 1fr; }
+      .bb-seg + .bb-seg { border-left: none; border-top: 1px solid var(--border); }
+    }
 
     /* ── Disclaimer ──────────────────────────────────────────── */
     .disclaimer { font-size: 0.58rem; color: var(--muted); margin-top: 24px; line-height: 1.7; }
@@ -889,28 +904,35 @@ function renderUnknown(syms) {
 
 // ── Bottom Benchmark Card ─────────────────────────────────────
 function renderBottomBm(a) {
-  const drivers=a.topDrivers.map(p=>p.sym).join(' · ')||'–';
   const dc=a.topDrivers.reduce((s,p)=>s+p.contribution,0);
   const dpct=a.portfolioWACI>0?Math.round(dc/a.portfolioWACI*100):0;
   // CO2 equivalents
   const flights=Math.round(a.footprintT/1.5);
-  const cars=(a.footprintT/2.3).toFixed(1);
+  const cars=fmt(a.footprintT/2.3,1);
+  const better=a.reduction>0;
+  const vc=better?'var(--green)':'var(--red)';
+  const chips=a.topDrivers.map(p=>
+    `<span class="bb-chip"><span class="dot" style="background:${waciColor(p.waci)}"></span>${p.sym}</span>`
+  ).join('')||'<span class="bb-sub">Keine Position über 4%</span>';
   return `
-    <div>
-      <div style="font-size:.62rem;color:#8e9cbd;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Benchmark-Ergebnis</div>
-      <div style="font-size:.9rem">
-        Dein WACI <span class="${waciClass(a.portfolioWACI)}" style="font-weight:700">${fmt(a.portfolioWACI)}</span>
-        vs. MSCI World <span class="neutral" style="font-weight:700">180,0</span>
-        — <span class="${a.reduction>0?'green':'red'}">${a.reduction>0?'−':'+'} ${Math.abs(Math.round(a.reduction*100))}%</span> besser
+    <div class="bb-seg">
+      <div class="bb-label">Benchmark-Ergebnis</div>
+      <div class="bb-verdict">
+        <span class="bb-verdict-num" style="color:${vc}">${better?'−':'+'}${Math.abs(Math.round(a.reduction*100))}%</span>
+        <span class="bb-sub">${better?'unter':'über'} MSCI World</span>
       </div>
-      <div style="font-size:.65rem;color:#8e9cbd;margin-top:4px">
-        ~${a.footprintT.toFixed(1)} t CO₂e/Jahr ≈ ${flights} Transatlantikflüge ≈ ${cars} PKW-Jahre
-      </div>
+      <div class="bb-sub" style="margin-top:7px">Dein WACI <strong style="color:var(--text)">${fmt(a.portfolioWACI)}</strong> vs. Benchmark <strong style="color:var(--text)">180,0</strong> tCO₂/$M</div>
     </div>
-    <div style="text-align:right">
-      <div style="font-size:.62rem;color:#8e9cbd;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Haupttreiber (&gt;4%)</div>
-      <div style="font-size:.85rem;color:#fbbf24;font-weight:500">${drivers}</div>
-      <div style="font-size:.62rem;color:#8e9cbd;margin-top:2px">= ${dpct}% des Portfolio-WACI</div>
+    <div class="bb-seg">
+      <div class="bb-label">Fußabdruck entspricht</div>
+      <div class="bb-equiv-row"><strong>${flights}</strong> Transatlantikflüge</div>
+      <div class="bb-equiv-row"><strong>${cars}</strong> PKW-Jahre</div>
+      <div class="bb-sub" style="margin-top:7px">bei ${fmt(a.footprintT,1)} t CO₂e/Jahr (finanziert)</div>
+    </div>
+    <div class="bb-seg">
+      <div class="bb-label">Haupttreiber (&gt;4% Anteil)</div>
+      <div class="bb-chips">${chips}</div>
+      <div class="bb-sub" style="margin-top:9px">zusammen ${dpct}% des Portfolio-WACI</div>
     </div>`;
 }
 
