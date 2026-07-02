@@ -234,16 +234,19 @@
     /* ── Responsive ──────────────────────────────────────────── */
     @media (max-width: 780px) {
       .score-row { grid-template-columns: 1fr; }
-      .gauge-card { flex-direction: row; gap: 20px; padding: 16px 18px; }
       .kpi-row { grid-template-columns: repeat(3, 1fr); }
       .insights-row { grid-template-columns: 1fr; }
       .sector-row { grid-template-columns: 1fr; }
     }
     @media (max-width: 540px) {
+      .portfolio-title { font-size: 1.05rem; }
       .kpi-row { grid-template-columns: 1fr 1fr; }
       .kpi-row .kpi:nth-child(5) { grid-column: span 2; }
       .kpi-value { font-size: 1.4rem; }
-      .waci-badge, .cumul-val { display: none; }
+      .waci-badge, .cumul-val, .h-hide { display: none; }
+      .sector-table .c-hide, .sector-table svg { display: none; }
+      .bm-name { width: 108px; font-size: 0.66rem; }
+      .bm-note { width: 74px; }
     }
   </style>
 </head>
@@ -306,9 +309,9 @@
     <span style="width:50px;flex-shrink:0">Symbol</span>
     <span style="flex:1">Beitrag</span>
     <span style="width:36px;text-align:right;flex-shrink:0">Beitr.</span>
-    <span style="width:60px;text-align:right;flex-shrink:0">WACI roh</span>
+    <span class="h-hide" style="width:60px;text-align:right;flex-shrink:0">WACI roh</span>
     <span style="width:36px;text-align:right;flex-shrink:0">Gew.</span>
-    <span style="width:40px;text-align:right;flex-shrink:0">Kum.%</span>
+    <span class="h-hide" style="width:40px;text-align:right;flex-shrink:0">Kum.%</span>
   </div>
   <div id="chart-container"></div>
 
@@ -319,9 +322,9 @@
       <table class="sector-table">
         <thead><tr>
           <th>Sektor</th>
-          <th class="r">Pos.</th>
+          <th class="r c-hide">Pos.</th>
           <th class="r">WACI Ø</th>
-          <th class="r">Gewicht</th>
+          <th class="r c-hide">Gewicht</th>
           <th class="r">Beitrag</th>
           <th class="r">Anteil</th>
         </tr></thead>
@@ -367,7 +370,7 @@ const WACI_DB = {
   DHL:{waci:180,reason:'Logistik – Flotte & Luftfracht'},FAST:{waci:80,reason:'Industrie – Vertrieb & Logistik'},
   CAT:{waci:150,reason:'Maschinenbau – Produktion'},MMM:{waci:120,reason:'Industrie – diversifiziert'},
   HON:{waci:90,reason:'Industrie – Automatisierung'},UPS:{waci:160,reason:'Logistik – Kurierdienste'},
-  FDX:{waci:170,reason:'Logistik – Luftfracht'},
+  FDX:{waci:170,reason:'Logistik – Luftfracht'},WM:{waci:750,reason:'Abfallwirtschaft – Deponie-Methan (Scope 1)'},
   // Consumer Staples
   KO:{waci:45,reason:'FMCG – Produktion & Verpackung'},PEP:{waci:40,reason:'FMCG – Produktion & Verpackung'},
   PG:{waci:30,reason:'FMCG – Haushalt & Körperpflege'},GIS:{waci:45,reason:'FMCG – Lebensmittelproduktion'},
@@ -817,9 +820,9 @@ function renderSectorTable(sectorList, totalWACI) {
     const barW=(s.contribution/maxC*60).toFixed(1);
     return `<tr>
       <td><span class="sector-dot" style="background:${sectorColor(s.name)}"></span>${s.name}</td>
-      <td class="r" style="color:#8e9cbd">${s.count}</td>
+      <td class="r c-hide" style="color:#8e9cbd">${s.count}</td>
       <td class="r" style="color:${ac};font-weight:600">${fmt(s.avgWaci,0)}</td>
-      <td class="r" style="color:#8e9cbd">${(s.weight*100).toFixed(1)}%</td>
+      <td class="r c-hide" style="color:#8e9cbd">${(s.weight*100).toFixed(1)}%</td>
       <td class="r" style="color:${cc};font-weight:600">${fmt(s.contribution)}</td>
       <td class="r" style="white-space:nowrap">
         <svg width="64" height="8" style="vertical-align:middle;margin-right:4px">
